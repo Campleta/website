@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from './../../services/authentication.service';
+import { AlertService } from './../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router) { }
+    private router: Router,
+    private alertService: AlertService) { }
 
   ngOnInit() {
   }
@@ -27,6 +29,7 @@ export class LoginComponent implements OnInit {
       },
       error => {
         console.log("Error", error);
+        this.alertService.error(error.statusText);
       });
   }
 
