@@ -11,10 +11,13 @@ import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.co
 import { LoginComponent } from './shared/login/login.component';
 
 import { AuthenticationService } from './services/authentication.service';
+import { AlertService } from './services/alert.service';
+import { AlertComponent } from './directives/alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AlertComponent,
     PageNotFoundComponent,
     LoginComponent
   ],
@@ -25,7 +28,10 @@ import { AuthenticationService } from './services/authentication.service';
     MainModule,
     AppRoutingModule
   ],
-  providers: [AuthenticationService],
+  providers: [
+    AlertService,
+    AuthenticationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
