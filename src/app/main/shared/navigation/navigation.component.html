@@ -15,17 +15,17 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="/register">Register</a></li>
-            <li><a href="/login">Login</a></li>
-            <!--<li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile<span class="caret"></span></a>
+            <li *ngIf="authService.isLoggedIn == false"><a routerLink="/register" routerLinkActive="active">Register</a></li>
+            <li *ngIf="authService.isLoggedIn == false"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+            <li *ngIf="authService.isLoggedIn == true" class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile<span class="caret"></span></a>
               <ul class="dropdown-menu">
-                  <li><a href="#">Profile</a></li>
-                  <li><a href="/Portal">Portal</a></li>
-                  <li><a href="#">Admin</a></li>
+                  <li><a routerLink="#">Profile</a></li>
+                  <li><a routerLink="/Portal">Portal</a></li>
+                  <li *ngIf="authService.isLoggedIn == true"><a routerLink="#">Admin</a></li>
               </ul>
-            </li>-->
-            <!--<li><a href="/logout">Logout</a></li>-->
+            </li>
+            <li *ngIf="authService.isLoggedIn == true"><a href="/logout">Logout</a></li>
           </ul>
       </div>
       <!-- /.navbar-collapse -->

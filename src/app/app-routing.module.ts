@@ -6,6 +6,7 @@ import { LoginComponent } from './shared/login/login.component';
 
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
+    { path: 'portal', loadChildren: 'app/portal/portal.module#PortalModule'},
     { path: '**', component: PageNotFoundComponent }
 ];
 
