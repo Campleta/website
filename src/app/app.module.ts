@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
+import { AuthGuard } from './auth-guard.service';
 
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
@@ -32,7 +33,8 @@ import { AlertComponent } from './directives/alert/alert.component';
   ],
   providers: [
     AlertService,
-    AuthenticationService
+    AuthenticationService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class AuthenticationService {
 
+  public isLoggedIn = false;
   public token: string;
   public currentUser: any = {};
 
@@ -18,12 +19,14 @@ export class AuthenticationService {
       .map((response: Response) => {
         let res = response.json();
         if(response.status >= 200 && response.status < 300) {
+          this.isLoggedIn = true;
           this.token = response.headers.get("campleta");
           this.currentUser = res;
           localStorage.setItem("campleta", this.token);
 
           return res;
         } else {
+          this.isLoggedIn = false;
           throw Error("Error logging in");
         }
       });
