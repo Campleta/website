@@ -11,7 +11,7 @@ import { LoginComponent } from './../shared/login/login.component';
 
 const portalRoutes: Routes = [
   {
-    path: 'portal',
+    path: '',
     component: PortalComponent,
     canActivate: [AuthGuard],
     children: [
