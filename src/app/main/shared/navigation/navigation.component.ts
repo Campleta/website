@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DropdownModule } from 'ng2-dropdown';
 import { AuthenticationService } from './../../../services/authentication.service';
 
 @Component({
