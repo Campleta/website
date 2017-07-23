@@ -1,10 +1,17 @@
 .navbar, .navbar-header, .navbar-collapse, .navbar-brand, .navbar-nav, .navbar-nav > li, .navbar-nav > li > a {
-    height: 60px;
     border-radius: 0px;
 }
+.navbar-collapse {
+    background-color: #5cb85c;
+}
 .navbar-brand, .navbar-nav > li > a {
-    line-height: 30px;
     color: #fff;
+}
+.navbar-default .navbar-toggle {
+    border-color: #fff;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
 }
 .navbar-nav > li > a:hover {
     background-color: #449D44;
