@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './services/guards/auth-guard.service';
+import { PortalGuard } from './services/guards/portal-guard.service';
 
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
@@ -15,13 +16,15 @@ import { LoginComponent } from './shared/login/login.component';
 import { AuthenticationService } from './services/authentication.service';
 import { AlertService } from './services/alert.service';
 import { AlertComponent } from './directives/alert/alert.component';
+import { NotAuthorizedComponent } from './shared/not-authorized/not-authorized.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AlertComponent,
     PageNotFoundComponent,
-    LoginComponent
+    LoginComponent,
+    NotAuthorizedComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,8 @@ import { AlertComponent } from './directives/alert/alert.component';
   providers: [
     AlertService,
     AuthenticationService,
-    AuthGuard
+    AuthGuard,
+    PortalGuard
   ],
   bootstrap: [AppComponent]
 })
