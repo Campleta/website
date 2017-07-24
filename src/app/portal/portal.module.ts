@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { PortalRoutingModule } from './portal-routing.module';
 import { PortalComponent } from './portal.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
+import { BookingComponent } from './booking/booking.component';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { NavigationComponent } from './shared/navigation/navigation.component';
   declarations: [
     PortalComponent,
     NavigationComponent,
-    DashboardComponent
+    DashboardComponent,
+    BookingComponent
   ]
 })
 export class PortalModule { }
