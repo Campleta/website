@@ -18,9 +18,9 @@ const portalRoutes: Routes = [
     children: [
       {
         path: '',
+        canActivateChild: [AuthGuard, PortalGuard],
         children: [
           { path: '', component: DashboardComponent },
-          { path: 'login', component: LoginComponent }
         ]
       }
     ]

@@ -1,0 +1,49 @@
+.navbar, .navbar-header, .navbar-collapse, .navbar-brand, .navbar-nav, .navbar-nav > li, .navbar-nav > li > a {
+    border-radius: 0px;
+}
+.navbar-collapse {
+    background-color: #5cb85c;
+}
+.navbar-brand, .navbar-nav > li > a {
+    color: #fff;
+}
+.navbar-default .navbar-toggle {
+    border-color: #fff;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #fff;
+}
+.navbar-nav > li > a:hover {
+    background-color: #449D44;
+}
+.navbar-brand:hover {
+    color: #fff;
+    background-color: #449D44;
+}
+.navbar-nav > .active > a {
+    background-color: #449D44 !important;
+}
+.navbar {
+    background-color: #5cb85c;
+    border-color: transparent;
+}
+.nav .open > a,
+.nav .open > a:focus,
+.nav .open > a:hover,
+.nav .open > a:active {
+    background-color: #449D44;
+}
+.dropdown-menu {
+    background-color: #449D44;
+}
+.dropdown-menu > li > a {
+    color: #fff;
+}
+.dropdown-menu > li:hover,
+.dropdown-menu > li > a:hover {
+    background-color: #5cb85c;
+    color: #fff;
+}
+.pointer {
+    cursor: pointer;
+}
