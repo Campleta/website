@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { 
   CanActivate,
+  CanActivateChild,
   Router,
   ActivatedRouteSnapshot,
   RouterStateSnapshot
@@ -8,7 +9,7 @@ import {
 import { AuthenticationService } from './../authentication.service';
 
 @Injectable()
-export class PortalGuard implements CanActivate {
+export class PortalGuard implements CanActivate, CanActivateChild {
 
   constructor(private authService: AuthenticationService, private router: Router) { }
 
@@ -16,6 +17,10 @@ export class PortalGuard implements CanActivate {
     let url: string = state.url;
 
     return this.checkPortalAuthorization(url);
+  }
+
+  canActivateChild(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    return this.canActivate(route, state);
   }
 
   checkPortalAuthorization(url: string): boolean {
