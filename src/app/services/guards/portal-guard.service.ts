@@ -20,12 +20,10 @@ export class PortalGuard implements CanActivate {
 
   checkPortalAuthorization(url: string): boolean {
     let currentUser = this.authService.currentUser;
-    if(currentUser.roles) {
-      currentUser.roles.forEach(element => {
-        if(element === "Portal") {
-          return true;
-        }
-      });
+    for (var index = 0; index < currentUser.roles.length; index++) {
+      var element = currentUser.roles[index];
+
+      if(element.name === "Employee") return true;
     }
 
     this.router.navigate(['/unauthorized']);
