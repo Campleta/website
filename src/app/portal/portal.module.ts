@@ -3,6 +3,8 @@ import { CommonModule }   from '@angular/common';
 import { FormsModule }    from '@angular/forms';
 import { DropdownModule } from 'ngx-dropdown';
 
+import { InlineSVGModule } from 'ng-inline-svg';
+
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { PortalRoutingModule } from './portal-routing.module';
@@ -14,6 +16,7 @@ import { BookingComponent } from './booking/booking.component';
   imports: [
     CommonModule,
     FormsModule,
+    InlineSVGModule,
     DropdownModule,
     PortalRoutingModule
   ],

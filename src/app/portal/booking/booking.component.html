@@ -18,7 +18,14 @@
     </div>
   </div>
 
-  <div class="col-lg-9 col-lg-offset-0 col-md-9 col-md-offset-0 col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-    <p>hej</p>
+  <div class="jumbotron col-lg-9 col-lg-offset-0 col-md-9 col-md-offset-0 col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+
+    <div>
+      <p><b>Spot id:</b> {{ spot.id }}</p>
+      <p><b>Spot name:</b> {{ spot.name }}</p>
+    </div>
+
+    <div [inlineSVG]="'../../../assets/images/Countries_Europe.svg'" (click)="selectElem($event)" style="width:100%;"></div>
+
   </div>
 </div>
