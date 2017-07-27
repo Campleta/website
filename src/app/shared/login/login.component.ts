@@ -21,14 +21,11 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    console.log("test", this.model);
-
     this.authenticationService.login(this.model.email, this.model.password)
       .subscribe(data => {
-        console.log("Success", data);
+        this.router.navigate(['/']);
       },
       error => {
-        console.log("Error", error);
         this.alertService.error(error.statusText);
       });
   }
