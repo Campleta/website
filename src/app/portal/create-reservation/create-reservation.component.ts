@@ -13,11 +13,20 @@ export class CreateReservationComponent implements OnInit {
     { "id": 2, "name": "Caravan" },
     { "id": 3, "name": "Mobile home" }
   ];
+  persons: Array<Guest> = [
+    { id: 1, firstname: "", lastname: "" },
+    { id: 2, firstname: "", lastname: "" },
+    { id: 3, firstname: "", lastname: "" },
+    { id: 4, firstname: "", lastname: "" },
+    { id: 5, firstname: "", lastname: "" },
+    { id: 6, firstname: "", lastname: "" },
+    { id: 7, firstname: "", lastname: "" },
+    { id: 8, firstname: "", lastname: "" },
+    { id: 9, firstname: "", lastname: "" }
+  ];
 
   amountPersons: number;
-  persons: any[] = [
-    { id: 1 }
-  ]
+  spotType: any;
 
   constructor() {
     this.amountPersons = 1;
@@ -26,9 +35,13 @@ export class CreateReservationComponent implements OnInit {
   ngOnInit() {
   }
 
-  changeAmountPersons(newAmount) {
-    console.log(newAmount);
-
+  onclick() {
+    console.log(this.persons);
   }
 
+}
+export class Guest {
+  id: number;
+  firstname: string;
+  lastname: string;
 }

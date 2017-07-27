@@ -1,11 +1,11 @@
 <div class="container">
-  <form #create novalidate>
+  <form #create (ngSubmit)="onclick()" novalidate>
     <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-      
+
       <!-- Type of spot -->
       <div class="form-group">
         <label>Type of spot</label>
-        <select class="form-control">
+        <select class="form-control" name="spotType" [(ngModel)]="spotType">
           <option *ngFor="let type of spotTypes" value="type.id">{{ type.name }}</option>
         </select>
       </div>
@@ -13,7 +13,7 @@
       <!-- Amount people -->
       <div class="form-group">
         <label>Select amount people</label>
-        <select class="form-control" name="amountPersons" [(ngModel)]="amountPersons" (change)="changeAmountPersons()">
+        <select class="form-control" name="amountPersons" [(ngModel)]="amountPersons">
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -26,9 +26,33 @@
         </select>
       </div>
 
-      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-        <div *ngFor="let person of persons; let i = index;">
-          <p>Person {{ i }} </p>
+      <div *ngFor="let person of persons | slice:0:amountPersons; let i = index;" class="panel panel-success">
+        <div class="panel-heading">
+          <p>Person {{ i+1 }} </p>
+        </div>
+
+        <div class="panel-body">
+
+          <!-- Person number -->
+          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-10 col-xs-offset-0">
+            <label>Person number</label>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Person number" />
+              <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
+            </div>
+          </div>
+
+          <!-- Firstname -->
+          <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
+            <label>First name</label>
+            <input type="text" name="firstname" class="form-control" [(ngModel)]="person.firstname" #firstname="ngModel" placeholder="Firstname" />
+          </div>
+
+          <!-- Lastname -->
+          <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
+            <label>Last name</label>
+            <input type="text" name="lastname" class="form-control" [(ngModel)]="persons[i].lastname" placeholder="Lastname" />
+          </div>
         </div>
       </div>
     </div>
@@ -43,5 +67,7 @@
         <my-date-picker name="endDate" [options]="myDatePickerOptions" [(ngModel)]="model2" required></my-date-picker>
       </div>
     </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
   </form>
 </div>
