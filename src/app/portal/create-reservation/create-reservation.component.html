@@ -40,14 +40,14 @@
            -->
           <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1" *ngIf="i == 0">
             <label for="campingCard">Camping card (optional)</label>
-            <input type="text" name="persons[1].campingCard" class="form-control" [(ngModel)]="persons[1].campingCard" #campingCard="ngModel" placeholder="Camping card number" />
+            <input type="text" name="person{{i}}.campingCard" class="form-control" [(ngModel)]="persons[0].campingCard" #campingCard="ngModel" placeholder="Camping card number" />
           </div>
 
-          <!-- Person number -->
+          <!-- Passport number -->
           <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-            <label>Person number</label>
+            <label>Passport number</label>
             <div class="input-group">
-              <input type="text" class="form-control" name="personNumber" placeholder="Person number" />
+              <input type="text" class="form-control" name="person{{i}}.passport" [(ngModel)]="person.passport" #person.passport="ngModel" placeholder="Passport number" />
               <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
             </div>
           </div>
@@ -55,13 +55,13 @@
           <!-- Firstname -->
           <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
             <label>First name</label>
-            <input type="text" name="persons[i].firstname" class="form-control" [(ngModel)]="persons[i].firstname" #firstname="ngModel" placeholder="Firstname" />
+            <input type="text" name="person{{i}}.firstname" class="form-control" [(ngModel)]="person.firstname" #person.firstname="ngModel" placeholder="Firstname" />
           </div>
 
           <!-- Lastname -->
           <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
             <label>Last name</label>
-            <input type="text" name="persons[i].lastname" class="form-control" [(ngModel)]="persons[i].lastname" placeholder="Lastname" />
+            <input type="text" name="person{{i}}.lastname" class="form-control" [(ngModel)]="person.lastname" #person.lastname placeholder="Lastname" />
           </div>
         </div>
       </div>

@@ -14,15 +14,15 @@ export class CreateReservationComponent implements OnInit {
     { "id": 3, "name": "Mobile home" }
   ];
   persons: Array<Guest> = [
-    { id: 1, firstname: "", lastname: "" },
-    { id: 2, firstname: "", lastname: "" },
-    { id: 3, firstname: "", lastname: "" },
-    { id: 4, firstname: "", lastname: "" },
-    { id: 5, firstname: "", lastname: "" },
-    { id: 6, firstname: "", lastname: "" },
-    { id: 7, firstname: "", lastname: "" },
-    { id: 8, firstname: "", lastname: "" },
-    { id: 9, firstname: "", lastname: "" }
+    { id: 1, passport: "", firstname: "", lastname: "" },
+    { id: 2, passport: "", firstname: "", lastname: "" },
+    { id: 3, passport: "", firstname: "", lastname: "" },
+    { id: 4, passport: "", firstname: "", lastname: "" },
+    { id: 5, passport: "", firstname: "", lastname: "" },
+    { id: 6, passport: "", firstname: "", lastname: "" },
+    { id: 7, passport: "", firstname: "", lastname: "" },
+    { id: 8, passport: "", firstname: "", lastname: "" },
+    { id: 9, passport: "", firstname: "", lastname: "" }
   ];
 
   amountPersons: number;
@@ -43,6 +43,7 @@ export class CreateReservationComponent implements OnInit {
 }
 export class Guest {
   id: number;
+  passport: string;
   firstname: string;
   lastname: string;
 }
