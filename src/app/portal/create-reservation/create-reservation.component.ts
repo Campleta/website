@@ -31,6 +31,7 @@ export class CreateReservationComponent implements OnInit {
 
   constructor() {
     this.amountPersons = 1;
+    this.spotType = 0;
    }
 
   ngOnInit() {

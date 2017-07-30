@@ -6,7 +6,7 @@
       <div class="form-group">
         <label>Type of spot</label>
         <select class="form-control" name="spotType" [(ngModel)]="spotType">
-          <option *ngFor="let type of spotTypes" [value]="type.id">{{ type.name }}</option>
+          <option *ngFor="let type of spotTypes; let i = index;" [value]="type.id">{{ type.name }}</option>
         </select>
       </div>
 
