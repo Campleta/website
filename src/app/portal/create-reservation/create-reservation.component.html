@@ -1,12 +1,12 @@
 <div class="container">
-  <form #create (ngSubmit)="onclick()" novalidate>
+  <form name="createReservationForm" #createReservationForm="ngForm" (ngSubmit)="onclick()">
     <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
 
       <!-- Type of spot -->
       <div class="form-group">
         <label>Type of spot</label>
         <select class="form-control" name="spotType" [(ngModel)]="spotType">
-          <option *ngFor="let type of spotTypes" value="type.id">{{ type.name }}</option>
+          <option *ngFor="let type of spotTypes" [value]="type.id">{{ type.name }}</option>
         </select>
       </div>
 
@@ -14,30 +14,40 @@
       <div class="form-group">
         <label>Select amount people</label>
         <select class="form-control" name="amountPersons" [(ngModel)]="amountPersons">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          <option value="8">8</option>
-          <option value="9">9</option>
+          <option [value]="1">1</option>
+          <option [value]="2">2</option>
+          <option [value]="3">3</option>
+          <option [value]="4">4</option>
+          <option [value]="5">5</option>
+          <option [value]="6">6</option>
+          <option [value]="7">7</option>
+          <option [value]="8">8</option>
+          <option [value]="9">9</option>
         </select>
       </div>
 
+      <!-- Person information -->
       <div *ngFor="let person of persons | slice:0:amountPersons; let i = index;" class="panel panel-success">
         <div class="panel-heading">
-          <p>Person {{ i+1 }} </p>
+          <p>Person {{ i+1 }} - Id: {{ person.id }}</p>
         </div>
 
         <div class="panel-body">
 
+          <!-- 
+            Camping card number
+            optional - only for 1. person
+           -->
+          <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1" *ngIf="i == 0">
+            <label for="campingCard">Camping card (optional)</label>
+            <input type="text" name="persons[1].campingCard" class="form-control" [(ngModel)]="persons[1].campingCard" #campingCard="ngModel" placeholder="Camping card number" />
+          </div>
+
           <!-- Person number -->
-          <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-10 col-xs-offset-0">
+          <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
             <label>Person number</label>
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Person number" />
+              <input type="text" class="form-control" name="personNumber" placeholder="Person number" />
               <div class="input-group-addon"><i class="glyphicon glyphicon-search"></i></div>
             </div>
           </div>
@@ -45,13 +55,13 @@
           <!-- Firstname -->
           <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
             <label>First name</label>
-            <input type="text" name="firstname" class="form-control" [(ngModel)]="person.firstname" #firstname="ngModel" placeholder="Firstname" />
+            <input type="text" name="persons[i].firstname" class="form-control" [(ngModel)]="persons[i].firstname" #firstname="ngModel" placeholder="Firstname" />
           </div>
 
           <!-- Lastname -->
           <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
             <label>Last name</label>
-            <input type="text" name="lastname" class="form-control" [(ngModel)]="persons[i].lastname" placeholder="Lastname" />
+            <input type="text" name="persons[i].lastname" class="form-control" [(ngModel)]="persons[i].lastname" placeholder="Lastname" />
           </div>
         </div>
       </div>

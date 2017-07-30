@@ -27,6 +27,7 @@ export class CreateReservationComponent implements OnInit {
 
   amountPersons: number;
   spotType: any;
+  campingCard: number;
 
   constructor() {
     this.amountPersons = 1;
