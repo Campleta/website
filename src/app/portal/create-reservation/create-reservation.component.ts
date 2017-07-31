@@ -15,7 +15,6 @@ export class CreateReservationComponent implements OnInit {
     markCurrentYear: true,
     openSelectorOnInputClick: true,
   };
-
   spotTypes: any = [
     { "id": 0, "name": "Small spot" },
     { "id": 1, "name": "Tent" },
@@ -33,12 +32,13 @@ export class CreateReservationComponent implements OnInit {
     { id: 8, passport: "", firstname: "", lastname: "", anonymous: false },
     { id: 9, passport: "", firstname: "", lastname: "", anonymous: false }
   ];
-
   amountPersons: number;
   spotType: any;
   campingCard: number;
   startDate: Object = { date: { day: 0, month: 0, year: 0 }};
   endDate: Object = { date: { day: 0, month: 0, year: 0 }};
+  availableSpots: number = 0;
+  calculatedPrice: number = 0;
 
   constructor() {
     this.amountPersons = 1;
