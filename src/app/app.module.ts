@@ -17,6 +17,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { AlertService } from './services/alert.service';
 import { AlertComponent } from './directives/alert/alert.component';
 import { NotAuthorizedComponent } from './shared/not-authorized/not-authorized.component';
+import { LogoutComponent } from './shared/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { NotAuthorizedComponent } from './shared/not-authorized/not-authorized.c
     AlertComponent,
     PageNotFoundComponent,
     LoginComponent,
-    NotAuthorizedComponent
+    NotAuthorizedComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

@@ -24,7 +24,7 @@
                         <li *ngIf="authService.isLoggedIn == true"><a routerLink="#">Admin</a></li>
                     </ul>
                 </li>
-                <li *ngIf="authService.isLoggedIn == true"><a href="/logout">Logout</a></li>
+                <li routerLink="/logout" *ngIf="authService.isLoggedIn == true"><a href="/logout">Logout</a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
