@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 
 @Component({
   selector: 'app-create-reservation',
@@ -6,6 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./create-reservation.component.css']
 })
 export class CreateReservationComponent implements OnInit {
+
+  myDatePickerOptions: IMyDpOptions = {
+    dateFormat: 'dd-mm-yyyy',
+    markCurrentDay: true,
+    markCurrentMonth: true,
+    markCurrentYear: true,
+    openSelectorOnInputClick: true,
+  };
 
   spotTypes: any = [
     { "id": 0, "name": "Small spot" },
@@ -28,10 +37,16 @@ export class CreateReservationComponent implements OnInit {
   amountPersons: number;
   spotType: any;
   campingCard: number;
+  startDate: Object = { date: { day: 0, month: 0, year: 0 }};
+  endDate: Object = { date: { day: 0, month: 0, year: 0 }};
 
   constructor() {
     this.amountPersons = 1;
     this.spotType = 0;
+
+    let date: Date = new Date();
+    this.startDate = { date: { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() }};
+    this.endDate = { date: { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() }};
    }
 
   ngOnInit() {
