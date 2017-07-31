@@ -33,7 +33,10 @@ export class AuthenticationService {
   }
 
   logout() {
-
+    this.isLoggedIn = false;
+    this.token = null;
+    this.currentUser = null;
+    localStorage.removeItem("campleta");
   }
 
   getHeaders() {
