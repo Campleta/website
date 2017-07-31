@@ -23,15 +23,15 @@ export class CreateReservationComponent implements OnInit {
     { "id": 3, "name": "Mobile home" }
   ];
   persons: Array<Guest> = [
-    { id: 1, passport: "", firstname: "", lastname: "" },
-    { id: 2, passport: "", firstname: "", lastname: "" },
-    { id: 3, passport: "", firstname: "", lastname: "" },
-    { id: 4, passport: "", firstname: "", lastname: "" },
-    { id: 5, passport: "", firstname: "", lastname: "" },
-    { id: 6, passport: "", firstname: "", lastname: "" },
-    { id: 7, passport: "", firstname: "", lastname: "" },
-    { id: 8, passport: "", firstname: "", lastname: "" },
-    { id: 9, passport: "", firstname: "", lastname: "" }
+    { id: 1, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 2, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 3, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 4, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 5, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 6, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 7, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 8, passport: "", firstname: "", lastname: "", anonymous: false },
+    { id: 9, passport: "", firstname: "", lastname: "", anonymous: false }
   ];
 
   amountPersons: number;
@@ -62,4 +62,5 @@ export class Guest {
   passport: string;
   firstname: string;
   lastname: string;
+  anonymous: boolean;
 }
