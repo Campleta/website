@@ -32,6 +32,7 @@ export class CreateReservationComponent implements OnInit {
     { id: 8, passport: "", firstname: "", lastname: "", anonymous: false },
     { id: 9, passport: "", firstname: "", lastname: "", anonymous: false }
   ];
+  model: any = {};
   amountPersons: number;
   spotType: any;
   campingCard: number;
@@ -39,12 +40,13 @@ export class CreateReservationComponent implements OnInit {
   endDate: Object = { date: { day: 0, month: 0, year: 0 }};
   availableSpots: number = 0;
   calculatedPrice: number = 0;
+  stays: any = [];
 
   constructor() {
     this.amountPersons = 1;
     this.spotType = 0;
 
-    let date: Date = new Date();
+    let date: Date = new Date()
     this.startDate = { date: { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() }};
     this.endDate = { date: { day: date.getDate(), month: date.getMonth() + 1, year: date.getFullYear() }};
    }
@@ -53,7 +55,25 @@ export class CreateReservationComponent implements OnInit {
   }
 
   onclick() {
-    console.log(this.persons);
+    this.model.areaType = this.spotType;
+    this.model.stay = [];
+    let startDateStr = this.setDate(this.startDate);
+    let endDateStr = this.setDate(this.endDate);
+    this.model.stay.push({ "guests": JSON.stringify(this.persons), "startDate": startDateStr, "endDate": endDateStr });
+    this.model.startDate = startDateStr;
+    this.model.endDate = endDateStr;
+
+    let json: String = JSON.stringify(this.model);
+    console.log(this.model);
+    
+  }
+
+  private setDate(date: Object) {
+    let returnDate = new Date();
+    returnDate.setDate = date['date'].day;
+    returnDate.setMonth = date['date'].month;
+    returnDate.setFullYear = date['date'].year;
+    return returnDate.toISOString();
   }
 
 }
