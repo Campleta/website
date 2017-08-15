@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Http, ConnectionBackend, RequestOptions, RequestOptionsArgs, Response, Headers } from '@angular/http';
+import { Http, ConnectionBackend, XHRBackend, RequestOptions, Request, RequestOptionsArgs, Response, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 import { environment } from './../../environments/environment';
 
 @Injectable()
 export class AuthHttpService extends Http {
 
   constructor(
-    private router: Router, 
     backend: ConnectionBackend, 
     defaultOptions: RequestOptions) {
       super(backend, defaultOptions);
@@ -26,7 +28,7 @@ export class AuthHttpService extends Http {
     options = options || new RequestOptions();
     options.headers = options.headers || new Headers();
 
-    let token = JSON.parse(localStorage.getItem("campleta"));
+    let token = localStorage.getItem("campleta");
     if(token) {
       options.headers.append("Authorization", "Bearer " + token);
     }
@@ -35,11 +37,22 @@ export class AuthHttpService extends Http {
   }
 
   private handleError(error: any) {
+    console.log("ERROR", error);
     if(error.status === 401) {
-      this.router.navigate(['/']);
+      window.location.href = '/login';
     }
 
-    return Observable.throw(error._body);
+    return Observable.throw(error.statusText);
   }
 
+}
+
+export function AuthHttpFactory(xhrBackend: XHRBackend, requestOptions: RequestOptions): Http {
+  return new AuthHttpService(xhrBackend, requestOptions);
+}
+
+export let AuthHttpProvider = {
+  provide: AuthHttpService,
+  useFactory: AuthHttpFactory,
+  deps: [XHRBackend, RequestOptions]
 }
