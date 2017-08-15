@@ -4,7 +4,7 @@
 
       <!-- Type of spot -->
       <div class="form-group">
-        <label>Type of spot</label>
+        <label>Type of area</label>
         <select class="form-control" name="spotType" [(ngModel)]="spotType">
           <option *ngFor="let type of spotTypes; let i = index;" [value]="type.id">{{ type.name }}</option>
         </select>

@@ -13,6 +13,8 @@ import { PortalModule } from './portal/portal.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
 import { LoginComponent } from './shared/login/login.component';
 
+import { AuthHttpProvider } from './services/auth-http.service';
+import { BookingService } from './services/booking.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AlertService } from './services/alert.service';
 import { AlertComponent } from './directives/alert/alert.component';
@@ -37,8 +39,10 @@ import { LogoutComponent } from './shared/logout/logout.component';
     AppRoutingModule
   ],
   providers: [
+    AuthHttpProvider,
     AlertService,
     AuthenticationService,
+    BookingService,
     AuthGuard,
     PortalGuard
   ],
