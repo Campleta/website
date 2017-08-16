@@ -16,6 +16,15 @@ export class BookingService {
       });
   }
 
+  getNotPlacedReservations() {
+    let options = new RequestOptions({headers: this.getHeaders()});
+
+    return this.authHttp.get("api/reservation", options)
+      .map((response: Response) => {
+        return response.json();
+      });
+  }
+
   private getHeaders() {
     let headers = new Headers();
     headers.append("Accept", "application/json");
