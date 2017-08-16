@@ -8,11 +8,8 @@
       </div>
 
       <ul class="list-group">
-        <li class="list-group-item">
-          Test request
-        </li>
-        <li class="list-group-item">
-          Test request 2
+        <li *ngFor="let reservation of reservations" class="list-group-item">
+          <span *ngIf="reservation.areaType != null">{{ reservation.areaType.name }}</span>
         </li>
       </ul>
     </div>
