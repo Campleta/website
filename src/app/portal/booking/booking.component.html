@@ -8,8 +8,9 @@
       </div>
 
       <ul class="list-group">
-        <li *ngFor="let reservation of reservations" class="list-group-item">
-          <span *ngIf="reservation.areaType != null">{{ reservation.areaType.name }}</span>
+        <li *ngFor="let reservation of reservations; let i = index;" class="list-group-item clearfix" (mouseover)="setHoveredReservation(i)" [class.list-group-item-success]="i == hoveredReservation">
+          <span class="pull-left">{{ reservation.stays[0].guests[0].lastname }}</span>
+          <small class="pull-right">{{ reservation.startDate | date: 'dd-MM-yyyy' }}</small>
         </li>
       </ul>
     </div>

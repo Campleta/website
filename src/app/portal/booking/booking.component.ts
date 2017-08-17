@@ -18,6 +18,7 @@ export class BookingComponent implements OnInit {
   reservations: any = [];
   
   spot: any = {};
+  hoveredReservation: number;
 
   constructor(private bookingService: BookingService) { }
 
@@ -40,6 +41,10 @@ export class BookingComponent implements OnInit {
     }
 
     this.getItemInfo(this.lastClicked);
+  }
+
+  setHoveredReservation(index) {
+    this.hoveredReservation = index;
   }
 
   getItemInfo(elem) {
