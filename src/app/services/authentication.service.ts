@@ -1,49 +1,87 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response, RequestOptions } from '@angular/http';
 import { environment } from './../../environments/environment';
+import { Observable, BehaviorSubject } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
+import { AuthHttpService } from './auth-http.service';
+import { tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class AuthenticationService {
 
-  public isLoggedIn = false;
+  public isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
   public token: string;
   public currentUser: any = {};
 
-  constructor(private http:Http) { }
+  constructor(private http:Http, private httpAuth: AuthHttpService) { }
 
   login(email: string, password: string) {
     let options = new RequestOptions({headers: this.getHeaders()});
 
     return this.http.post(`${environment.baseApi}/api/auth/login`, { "email": email, "password": password }, options)
       .map((response: Response) => {
-        let res = response.json();
-        if(response.status >= 200 && response.status < 300) {
-          this.isLoggedIn = true;
-          this.token = response.headers.get("campleta");
-          this.currentUser = res;
-          localStorage.setItem("campleta", this.token);
-
-          return res;
+        if(this.validateAuthResponse(response)) {
+          this.setUser(response);
+          return response.json();
         } else {
-          this.isLoggedIn = false;
+          this.logout();
           throw Error("Error logging in");
         }
       });
   }
 
+  authenticate() {
+    let options = new RequestOptions({headers: this.getHeaders()});
+
+    return this.httpAuth.get(`api/auth/reauth`, options)
+      .map((response: Response) => {
+        if(this.validateAuthResponse(response)) {
+          this.setUser(response);
+          return response.json();
+        } else {
+          this.logout();
+          throw Error("Error logging in");
+        }
+      });
+  }
+
+  isAuthenticated() {
+    if(this.isLoggedIn.value) {
+      return true;
+    } else {
+      return tokenNotExpired("campleta");
+    }
+  }
+
   logout() {
-    this.isLoggedIn = false;
+    this.isLoggedIn.next(false);
     this.token = null;
     this.currentUser = null;
     localStorage.removeItem("campleta");
   }
 
-  getHeaders() {
+  private setUser(response: Response) {
+    let res = response.json();
+    
+    this.isLoggedIn.next(true);
+    this.token = response.headers.get("campleta");
+    this.currentUser = res;
+    localStorage.setItem("campleta", this.token);
+  }
+
+  private getHeaders() {
     let headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
     return headers;
+  }
+
+  private validateAuthResponse(response: Response) {
+    return response.status >= 200 && response.status < 300;
+  }
+
+  private hasToken(): boolean {
+    return tokenNotExpired("campleta");
   }
 
 }

@@ -19,17 +19,17 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li *ngIf="authService.isLoggedIn == false"><a routerLink="/register" routerLinkActive="active">Register</a></li>
-                <li *ngIf="authService.isLoggedIn == false"><a routerLink="/login" routerLinkActive="active">Login</a></li>
-                <li *ngIf="authService.isLoggedIn == true" class="dropdown" dropdown>
+                <li *ngIf="!authService.isAuthenticated()"><a routerLink="/register" routerLinkActive="active">Register</a></li>
+                <li *ngIf="!authService.isAuthenticated()"><a routerLink="/login" routerLinkActive="active">Login</a></li>
+                <li *ngIf="authService.isAuthenticated()" class="dropdown" dropdown>
                     <a class="pointer" dropdown-open>Profile<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a routerLink="#">Profile</a></li>
                         <li><a routerLink="/portal">Portal</a></li>
-                        <li *ngIf="authService.isLoggedIn == true"><a routerLink="#">Admin</a></li>
+                        <li><a routerLink="#">Admin</a></li>
                     </ul>
                 </li>
-                <li *ngIf="authService.isLoggedIn == true"><a href="/logout">Logout</a></li>
+                <li *ngIf="authService.isAuthenticated()"><a href="/logout">Logout</a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->

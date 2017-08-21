@@ -39,6 +39,8 @@ const portalRoutes: Routes = [
   declarations: [],
   exports: [
     RouterModule
+  ],
+  providers: [
   ]
 })
 export class PortalRoutingModule { }
