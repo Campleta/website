@@ -20,6 +20,7 @@ import { AlertService } from './services/alert.service';
 import { AlertComponent } from './directives/alert/alert.component';
 import { NotAuthorizedComponent } from './shared/not-authorized/not-authorized.component';
 import { LogoutComponent } from './shared/logout/logout.component';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { LogoutComponent } from './shared/logout/logout.component';
   ],
   providers: [
     AuthHttpProvider,
+    AuthHttp,
     AlertService,
     AuthenticationService,
     BookingService,
