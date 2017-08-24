@@ -10,7 +10,6 @@ export class AppComponent {
   title = 'app works!';
 
   constructor(private authService: AuthenticationService) {
-    this.authService.authenticate()
-      .subscribe(res => {});
+    
   }
 }
