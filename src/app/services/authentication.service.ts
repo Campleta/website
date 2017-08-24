@@ -12,6 +12,7 @@ export class AuthenticationService {
   public isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
   public token: string;
   public currentUser: any = {};
+  public campsite: any = {};
 
   constructor(private http:Http, private httpAuth: AuthHttpService) { }
 
@@ -22,6 +23,7 @@ export class AuthenticationService {
       .map((response: Response) => {
         if(this.validateAuthResponse(response)) {
           this.setUser(response);
+          this.setCampsite(response.json());
           return response.json();
         } else {
           this.logout();
@@ -37,6 +39,7 @@ export class AuthenticationService {
       .map((response: Response) => {
         if(this.validateAuthResponse(response)) {
           this.setUser(response);
+          this.setCampsite(response.json());
           return response.json();
         } else {
           this.logout();
@@ -57,6 +60,7 @@ export class AuthenticationService {
     this.isLoggedIn.next(false);
     this.token = null;
     this.currentUser = null;
+    this.campsite = null;
     localStorage.removeItem("campleta");
   }
 
@@ -67,6 +71,10 @@ export class AuthenticationService {
     this.token = response.headers.get("campleta");
     this.currentUser = res;
     localStorage.setItem("campleta", this.token);
+  }
+
+  private setCampsite(response) {
+    this.campsite = response.campsite;
   }
 
   private getHeaders() {
