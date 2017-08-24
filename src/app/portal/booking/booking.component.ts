@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BookingService } from './../../services/booking.service';
 
 @Component({
   selector: 'app-booking',
@@ -14,13 +15,16 @@ export class BookingComponent implements OnInit {
   selectColor = "blue";
   startStroke = "6.11153841";
   hoverStroke = "8";
+  reservations: any = [];
   
   spot: any = {};
+  hoveredReservation: number;
 
-  constructor() { }
+  constructor(private bookingService: BookingService) { }
 
   ngOnInit() {
     this.lastClicked
+    this.getReservations();
   }
 
   selectElem(elem) {
@@ -39,9 +43,20 @@ export class BookingComponent implements OnInit {
     this.getItemInfo(this.lastClicked);
   }
 
+  setHoveredReservation(index) {
+    this.hoveredReservation = index;
+  }
+
   getItemInfo(elem) {
     this.spot.name = "test";
     this.spot.id = elem.srcElement.id;
+  }
+
+  private getReservations() {
+    this.bookingService.getNotPlacedReservations()
+      .subscribe(data => {
+        this.reservations = data;
+      });
   }
 
 }
