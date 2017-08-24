@@ -12,7 +12,7 @@ export class AuthenticationService {
   public isLoggedIn = new BehaviorSubject<boolean>(this.hasToken());
   public token: string;
   public currentUser: any = {};
-  public campsite: any = {};
+  public campsite: any = null;
 
   constructor(private http:Http, private httpAuth: AuthHttpService) { }
 
