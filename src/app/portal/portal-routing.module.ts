@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard } from './../services/guards/auth-guard.service';
+import { CampsiteGuard } from './../services/guards/campsite-guard.service';
 import { PortalGuard } from './../services/guards/portal-guard.service';
  
 import { PortalComponent } from './portal.component';
@@ -16,7 +17,7 @@ const portalRoutes: Routes = [
   {
     path: 'portal',
     component: PortalComponent,
-    canActivate: [AuthGuard, PortalGuard],
+    canActivate: [AuthGuard, CampsiteGuard, PortalGuard],
     children: [
       {
         path: '',

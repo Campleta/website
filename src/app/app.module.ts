@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AuthGuard } from './services/guards/auth-guard.service';
+import { CampsiteGuard } from './services/guards/campsite-guard.service';
 import { PortalGuard } from './services/guards/portal-guard.service';
 
 import { AppComponent } from './app.component';
@@ -46,6 +47,7 @@ import { AuthHttp, AuthConfig } from 'angular2-jwt';
     AuthenticationService,
     BookingService,
     AuthGuard,
+    CampsiteGuard,
     PortalGuard
   ],
   bootstrap: [AppComponent]
