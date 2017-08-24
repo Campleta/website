@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 import { BookingService } from './../../services/booking.service';
+import { AuthenticationService } from './../../services/authentication.service';
 
 @Component({
   selector: 'app-create-reservation',
@@ -44,7 +45,7 @@ export class CreateReservationComponent implements OnInit {
   calculatedPrice: number = 0;
   stays: any = [];
 
-  constructor(private router: Router, private bookingService: BookingService) {
+  constructor(private router: Router, private bookingService: BookingService, private authService: AuthenticationService) {
     this.amountPersons = 1;
     this.spotType = 0;
 
@@ -57,6 +58,7 @@ export class CreateReservationComponent implements OnInit {
   }
 
   onclick() {
+    this.model.campsite = this.authService.campsite.id;
     this.model.areaType = this.spotType;
     this.model.stays = [];
     let startDateStr = this.setDate(this.startDate);
