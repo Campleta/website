@@ -10,6 +10,5 @@ export class AppComponent {
   title = 'app works!';
 
   constructor(private authService: AuthenticationService) {
-    
   }
 }
