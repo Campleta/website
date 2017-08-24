@@ -91,5 +91,4 @@ export class AuthenticationService {
   private hasToken(): boolean {
     return tokenNotExpired("campleta");
   }
-
 }
