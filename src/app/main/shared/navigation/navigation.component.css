@@ -4,8 +4,13 @@
 .navbar-collapse {
     background-color: #5cb85c;
 }
-.navbar-brand, .navbar-nav > li > a {
+.navbar-brand, .navbar-brand:focus, .navbar-brand:active, .navbar-nav > li > a {
     color: #fff;
+    background-color: rgba(92, 184, 92, 0);
+    -webkit-transition: background-color 0.2s linear;
+    -moz-transition: background-color 0.2s linear;
+    -o-transition: background-color 0.2s linear;
+    transition: background-color 0.2s linear;
 }
 .navbar-default .navbar-toggle {
     border-color: #fff;
@@ -38,9 +43,14 @@
 }
 .dropdown-menu > li > a {
     color: #fff;
+    background-color: rgba(92, 184, 92, 0);
+    -webkit-transition: background-color 1s linear;
+    -moz-transition: background-color 1s linear;
+    -o-transition: background-color 1s linear;
+    transition: background-color 1s linear;
 }
 .dropdown-menu > li:hover,
 .dropdown-menu > li > a:hover {
-    background-color: #5cb85c;
+    background-color: rgba(92, 184, 92, 1);
     color: #fff;
 }
