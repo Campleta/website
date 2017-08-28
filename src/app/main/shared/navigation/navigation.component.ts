@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AuthenticationService } from './../../../services/authentication.service';
 
 @Component({
   selector: 'app-navigation',
@@ -9,17 +7,9 @@ import { AuthenticationService } from './../../../services/authentication.servic
 })
 export class NavigationComponent implements OnInit {
 
-  isIn = false; // responsive collapse
-  public profileCollapse:boolean = false;
-
-  constructor(public authService: AuthenticationService) { 
-  }
+  constructor() { }
 
   ngOnInit() {
-  }
-
-  toggleState() {
-    this.isIn = !this.isIn;
   }
 
 }
