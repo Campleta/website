@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthenticationService } from './../../services/authentication.service';
-import { AlertService } from './../../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -14,19 +13,20 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router,
-    private alertService: AlertService) { }
+    private router: Router) { }
 
   ngOnInit() {
   }
 
   login() {
+    console.log("test", this.model);
+
     this.authenticationService.login(this.model.email, this.model.password)
       .subscribe(data => {
-        this.router.navigate(['/']);
+        console.log("Success", data);
       },
       error => {
-        this.alertService.error(error.statusText);
+        console.log("Error", error);
       });
   }
 
