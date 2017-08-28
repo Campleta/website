@@ -26,6 +26,15 @@ export class BookingService {
       });
   }
 
+  getAreaTypesForCampsite() {
+    let options = new RequestOptions({headers: this.getHeaders()});
+
+    return this.authHttp.get(`api/areaTypes/${this.authService.campsite.id}`, options)
+      .map((response: Response) => {
+        return response.json();
+      })
+  }
+
   private getHeaders() {
     let headers = new Headers();
     headers.append("Accept", "application/json");

@@ -18,12 +18,7 @@ export class CreateReservationComponent implements OnInit {
     markCurrentYear: true,
     openSelectorOnInputClick: true,
   };
-  spotTypes: any = [
-    { "id": 0, "name": "Small spot" },
-    { "id": 1, "name": "Tent" },
-    { "id": 2, "name": "Caravan" },
-    { "id": 3, "name": "Mobile home" }
-  ];
+  spotTypes: any = [];
   persons: Array<Guest> = [
     { id: 1, passport: "", firstname: "", lastname: "", anonymous: false },
     { id: 2, passport: "", firstname: "", lastname: "", anonymous: false },
@@ -55,6 +50,10 @@ export class CreateReservationComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.bookingService.getAreaTypesForCampsite()
+      .subscribe(res => {
+        this.spotTypes = res;
+      });
   }
 
   onclick() {

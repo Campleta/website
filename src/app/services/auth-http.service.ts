@@ -37,8 +37,8 @@ export class AuthHttpService extends Http {
   }
 
   private handleError(error: any) {
-    console.log("ERROR", error);
     if(error.status === 401) {
+      localStorage.removeItem("campleta");
       window.location.href = '/login';
     }
 
