@@ -10,6 +10,7 @@ import { CampsiteGuard } from './services/guards/campsite-guard.service';
 import { PortalGuard } from './services/guards/portal-guard.service';
 
 import { AppComponent } from './app.component';
+import { SharedModule } from './shared/shared.module';
 import { MainModule } from './main/main.module';
 import { PortalModule } from './portal/portal.module';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component';
@@ -20,10 +21,12 @@ import { StartupService } from './services/startup-service.service';
 import { BookingService } from './services/booking.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AlertService } from './services/alert.service';
+import { SpinnerService } from './services/spinner.service';
 import { AlertComponent } from './directives/alert/alert.component';
 import { NotAuthorizedComponent } from './shared/not-authorized/not-authorized.component';
 import { LogoutComponent } from './shared/logout/logout.component';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 export function startupServiceFactory(startupService: StartupService): Function {
   return () => startupService.load();
@@ -43,6 +46,7 @@ export function startupServiceFactory(startupService: StartupService): Function 
     BrowserAnimationsModule,
     FormsModule,
     HttpModule,
+    SharedModule,
     MainModule,
     PortalModule,
     AppRoutingModule
@@ -51,6 +55,7 @@ export function startupServiceFactory(startupService: StartupService): Function 
     AuthHttpProvider,
     AuthHttp,
     AlertService,
+    SpinnerService,
     AuthenticationService,
     BookingService,
     StartupService,
@@ -64,6 +69,9 @@ export function startupServiceFactory(startupService: StartupService): Function 
     CampsiteGuard,
     PortalGuard
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    SpinnerComponent
+  ]
 })
 export class AppModule { }

@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+
+/*
+ *  Panels
+ */
+.panel-campleta {
+    border-color: #449D44 !important;
+}
+.panel-campleta > .panel-heading {
+    color: #2b662b;
+    background-color: #5cb85c;
+    border-color: #449D44;
+}
+
+/*
+ *  Buttons
+ */
+ .btn-campleta {
+     color: #fff;
+     background-color: #449D44;
+     border-color: #2b662b;
+
+     -webkit-transition: background-color .2s linear;
+     -moz-transition: background-color .2s linear;
+     -o-transition: background-color .2s linear;
+     transition: background-color .2s linear;
+
+ }
+ .btn-campleta:hover {
+     color: #fff !important;
+     background-color: #5cb85c;
+     border-color: #449D44;
+ }
