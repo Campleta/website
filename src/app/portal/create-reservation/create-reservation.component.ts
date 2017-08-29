@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 import { BookingService } from './../../services/booking.service';
 import { AuthenticationService } from './../../services/authentication.service';
+import { SpinnerService } from './../../services/spinner.service';
 
 @Component({
   selector: 'app-create-reservation',
@@ -40,7 +41,10 @@ export class CreateReservationComponent implements OnInit {
   calculatedPrice: number = 0;
   stays: any = [];
 
-  constructor(private router: Router, private bookingService: BookingService, private authService: AuthenticationService) {
+  constructor(private router: Router, 
+    private bookingService: BookingService, 
+    private authService: AuthenticationService,
+    private spinnerService: SpinnerService) {
     this.amountPersons = 1;
     this.spotType = 0;
 
@@ -57,6 +61,7 @@ export class CreateReservationComponent implements OnInit {
   }
 
   onclick() {
+    this.spinnerService.show("create-reservation-spinner");
     this.model.campsite = this.authService.campsite.id;
     this.model.areaType = this.spotType;
     this.model.stays = [];
@@ -70,7 +75,11 @@ export class CreateReservationComponent implements OnInit {
 
     this.bookingService.createReservation(json)
       .subscribe(data => {
+        console.log("test");
+        this.spinnerService.hide("create-reservation-spinner");
         this.router.navigate(["/portal/booking"]);
+      }, error => {
+        this.spinnerService.hide("create-reservation-spinner");
       });
     
   }

@@ -5,6 +5,7 @@ import { DropdownModule } from 'ngx-dropdown';
 
 import { InlineSVGModule } from 'ng-inline-svg';
 import { MyDatePickerModule } from 'mydatepicker';
+import { SharedModule } from './../shared/shared.module';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -19,6 +20,7 @@ import { CreateReservationComponent } from './create-reservation/create-reservat
     CommonModule,
     FormsModule,
     InlineSVGModule,
+    SharedModule,
     MyDatePickerModule,
     DropdownModule,
     PortalRoutingModule

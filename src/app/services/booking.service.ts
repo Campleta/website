@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Headers, RequestOptions, Response } from '@angular/http';
 import { AuthHttpService } from './auth-http.service';
 import { AuthenticationService } from './authentication.service';
+import { SpinnerService } from './spinner.service';
 
 @Injectable()
 export class BookingService {
 
-  constructor(private authHttp: AuthHttpService, private authService: AuthenticationService) { }
+  constructor(private authHttp: AuthHttpService, 
+    private authService: AuthenticationService, 
+    private spinnerService: SpinnerService) { }
 
   createReservation(data: any) {
     let options = new RequestOptions({headers: this.getHeaders()});
@@ -20,6 +23,7 @@ export class BookingService {
   getNotPlacedReservations() {
     let options = new RequestOptions({headers: this.getHeaders()});
 
+    this.spinnerService.show('reservationLoader');
     return this.authHttp.get(`api/reservations/${this.authService.campsite.id}/notApproved`, options)
       .map((response: Response) => {
         return response.json();

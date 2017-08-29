@@ -1,10 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
 import { BookingService } from './../../services/booking.service';
-
+ 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.css']
+  styleUrls: ['./booking.component.css'],
+  animations: [
+    trigger('reservationsHover', [
+      state('0', style({ backgroundColor: 'transparent' })),
+      state('1', style({ backgroundColor: '#5cb85c' })),
+      transition('0 => 1', animate('200ms ease-in')),
+      transition('1 => 0', animate('200ms ease-out'))
+    ])
+  ]
 })
 export class BookingComponent implements OnInit {
 
@@ -21,6 +36,8 @@ export class BookingComponent implements OnInit {
   hoveredReservation: number;
 
   constructor(private bookingService: BookingService) { }
+
+  
 
   ngOnInit() {
     this.lastClicked
@@ -45,6 +62,10 @@ export class BookingComponent implements OnInit {
 
   setHoveredReservation(index) {
     this.hoveredReservation = index;
+  }
+
+  removeHoveredReservation() {
+    this.hoveredReservation = null;
   }
 
   getItemInfo(elem) {
