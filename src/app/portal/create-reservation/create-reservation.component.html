@@ -1,5 +1,6 @@
 <div class="container">
-    <spinner name="create-reservation-spinner" data-container="body"></spinner>
+  <spinner name="create-reservation-spinner"></spinner>
+  <app-alert></app-alert>
 
   <form name="createReservationForm" #createReservationForm="ngForm" (ngSubmit)="onclick()">
     <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
@@ -7,16 +8,17 @@
       <!-- Type of spot -->
       <div class="form-group">
         <label>Type of area</label>
-        <select class="form-control" name="spotType" [(ngModel)]="spotType">
+        <select class="form-control" name="spotType" [(ngModel)]="spotType" #areaType="ngModel" required>
           <option value="0" disabled="true">Select a area type</option>
           <option *ngFor="let type of spotTypes; let i = index;" [value]="type.id">{{ type.name }}</option>
         </select>
+        <div [hidden]="areaType.valid || areaType.pristine" class="alert alert-danger">Area type is required</div>
       </div>
 
       <!-- Amount people -->
       <div class="form-group">
         <label>Select amount people</label>
-        <select class="form-control" name="amountPersons" [(ngModel)]="amountPersons">
+        <select class="form-control" name="amountPersons" [(ngModel)]="amountPersons" #amountGuests="ngModel" required>
           <option [value]="1">1</option>
           <option [value]="2">2</option>
           <option [value]="3">3</option>
@@ -27,6 +29,7 @@
           <option [value]="8">8</option>
           <option [value]="9">9</option>
         </select>
+        <div [hidden]="amountGuests.valid || amountGuests.pristine" class="alert alert-danger">Amount persons is required</div>
       </div>
 
       <!-- Person information -->
@@ -87,13 +90,13 @@
       <!-- Start date -->
       <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>Start date</label>
-        <my-date-picker name="startDate" [options]="myDatePickerOptions" [(ngModel)]="startDate" required></my-date-picker>
+        <my-date-picker name="startDate" [options]="myDatePickerOptions" [(ngModel)]="startDate"></my-date-picker>
       </div>
 
       <!-- End date -->
       <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>End date</label>
-        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" [(ngModel)]="endDate" required></my-date-picker>
+        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" [(ngModel)]="endDate"></my-date-picker>
       </div>
 
       <!-- Available spots -->
