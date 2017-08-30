@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SpinnerComponent } from './../shared/spinner/spinner.component';
+import { SpinnerComponent } from './../directives/spinner/spinner.component';
 
 @Injectable()
 export class SpinnerService {
@@ -9,7 +9,6 @@ export class SpinnerService {
   constructor() { }
 
   show(spinnerName: string): void {
-    console.log("show", this.spinnerCache);
     this.spinnerCache.forEach(spinner => {
       if(spinner.name === spinnerName) {
         spinner.show = true;
@@ -37,7 +36,6 @@ export class SpinnerService {
 
   _register(spinner: SpinnerComponent): void {
     this.spinnerCache.add(spinner);
-    console.log("cache", this.spinnerCache);
   }
 
   _unregister(spinnerToRemove: SpinnerComponent): void {

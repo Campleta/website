@@ -4,6 +4,7 @@ import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 import { BookingService } from './../../services/booking.service';
 import { AuthenticationService } from './../../services/authentication.service';
 import { SpinnerService } from './../../services/spinner.service';
+import { AlertService } from './../../services/alert.service';
 
 @Component({
   selector: 'app-create-reservation',
@@ -44,7 +45,8 @@ export class CreateReservationComponent implements OnInit {
   constructor(private router: Router, 
     private bookingService: BookingService, 
     private authService: AuthenticationService,
-    private spinnerService: SpinnerService) {
+    private spinnerService: SpinnerService,
+    private alertService: AlertService) {
     this.amountPersons = 1;
     this.spotType = 0;
 
@@ -77,9 +79,11 @@ export class CreateReservationComponent implements OnInit {
       .subscribe(data => {
         console.log("test");
         this.spinnerService.hide("create-reservation-spinner");
+        this.alertService.success("Success");
         this.router.navigate(["/portal/booking"]);
       }, error => {
         this.spinnerService.hide("create-reservation-spinner");
+        this.alertService.error("Something went wrong, creating the reservation.");
       });
     
   }
