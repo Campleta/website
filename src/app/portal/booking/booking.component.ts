@@ -36,7 +36,7 @@ export class BookingComponent implements OnInit {
   spot: any = {};
   hoveredReservation: number;
 
-  constructor(private bookingService: BookingService, private authService: AuthenticationService) { }
+  constructor(private bookingService: BookingService, public authService: AuthenticationService) { }
 
   
 
