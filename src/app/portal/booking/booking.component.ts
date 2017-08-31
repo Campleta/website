@@ -7,6 +7,7 @@ import {
   transition
 } from '@angular/animations';
 import { BookingService } from './../../services/booking.service';
+import { AuthenticationService } from './../../services/authentication.service';
  
 @Component({
   selector: 'app-booking',
@@ -35,7 +36,7 @@ export class BookingComponent implements OnInit {
   spot: any = {};
   hoveredReservation: number;
 
-  constructor(private bookingService: BookingService) { }
+  constructor(private bookingService: BookingService, private authService: AuthenticationService) { }
 
   
 
