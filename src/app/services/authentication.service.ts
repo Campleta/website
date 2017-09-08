@@ -41,7 +41,18 @@ export class AuthenticationService {
       .map((response: Response) => {
         if(this.validateAuthResponse(response)) {
           this.setUser(response);
-          this.setCampsite(response.json());
+          if(response.json().campsites.length > 1) {
+            if(localStorage.getItem("campsite") != null) {
+              response.json().campsites.forEach(element => {
+                if(element.id == localStorage.getItem("campsite")) {
+                  let data = {"campsite": element};
+                  this.setCampsite(data);
+                }
+              });
+            }
+          } else {
+            this.setCampsite(response.json());
+          }
           return response.json();
         } else {
           this.logout();
@@ -67,8 +78,8 @@ export class AuthenticationService {
   }
 
   public setCampsite(response) {
-    console.log(response);
     this.campsite = response.campsite;
+    localStorage.setItem("campsite", this.campsite.id);
   }
 
   private setUser(response: Response) {
