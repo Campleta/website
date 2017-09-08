@@ -39,6 +39,18 @@ export class BookingService {
       })
   }
 
+  getCampsiteAreas() {
+    let options = new RequestOptions({headers: this.getHeaders()});
+
+    let areas = [
+      {name: "dk"},
+      {name: "nc"},
+      {name: "gb-gbn"}
+    ];
+
+    return areas;
+  }
+
   private getHeaders() {
     let headers = new Headers();
     headers.append("Accept", "application/json");

@@ -32,13 +32,16 @@ export class BookingComponent implements OnInit {
   startStroke = "6.11153841";
   hoverStroke = "8";
   reservations: any = [];
+
+  areas: any = [];
   
   spot: any = {};
   hoveredReservation: number;
+  map;
 
-  constructor(private bookingService: BookingService, public authService: AuthenticationService) { }
-
-  
+  constructor(
+    private bookingService: BookingService,
+    public authService: AuthenticationService) { }
 
   ngOnInit() {
     this.lastClicked
@@ -72,6 +75,24 @@ export class BookingComponent implements OnInit {
   getItemInfo(elem) {
     this.spot.name = "test";
     this.spot.id = elem.srcElement.id;
+  }
+
+  setMapData(event) {
+    this.map = event;
+    this.getAreas();
+  }
+
+  updateMapData() {
+    this.areas.forEach(element => {
+      var elem = this.map.querySelector("#"+element.name);
+      elem.style.fill = "red";
+    });
+  }
+
+  private getAreas() {
+    this.areas = this.bookingService.getCampsiteAreas();
+
+    this.updateMapData();
   }
 
   private getReservations() {

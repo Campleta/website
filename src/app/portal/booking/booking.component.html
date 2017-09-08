@@ -23,7 +23,7 @@
       <p><b>Spot name:</b> {{ spot.name }}</p>
     </div>
 
-    <div [inlineSVG]="authService.campsite.mapUrl" (click)="selectElem($event)" style="width:100%;"></div>
+    <div [inlineSVG]="'../assets/images/Countries_Europe.svg'" id="map" #map (onSVGInserted)="setMapData($event)" (click)="selectElem($event)" style="width:100%;"></div>
 
   </div>
 </div>
