@@ -23,7 +23,9 @@ export class AuthenticationService {
       .map((response: Response) => {
         if(this.validateAuthResponse(response)) {
           this.setUser(response);
-          this.setCampsite(response.json());
+          if(response.json().campsites.length == 1) {
+            this.setCampsite(response.json());
+          }
           return response.json();
         } else {
           this.logout();
@@ -39,7 +41,18 @@ export class AuthenticationService {
       .map((response: Response) => {
         if(this.validateAuthResponse(response)) {
           this.setUser(response);
-          this.setCampsite(response.json());
+          if(response.json().campsites.length > 1) {
+            if(localStorage.getItem("campsite") != null) {
+              response.json().campsites.forEach(element => {
+                if(element.id == localStorage.getItem("campsite")) {
+                  let data = {"campsite": element};
+                  this.setCampsite(data);
+                }
+              });
+            }
+          } else {
+            this.setCampsite(response.json());
+          }
           return response.json();
         } else {
           this.logout();
@@ -64,17 +77,18 @@ export class AuthenticationService {
     localStorage.removeItem("campleta");
   }
 
+  public setCampsite(response) {
+    this.campsite = response.campsite;
+    localStorage.setItem("campsite", this.campsite.id);
+  }
+
   private setUser(response: Response) {
     let res = response.json();
-    
+
     this.isLoggedIn.next(true);
     this.token = response.headers.get("campleta");
     this.currentUser = res;
     localStorage.setItem("campleta", this.token);
-  }
-
-  private setCampsite(response) {
-    this.campsite = response.campsite;
   }
 
   private getHeaders() {

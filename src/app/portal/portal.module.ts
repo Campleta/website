@@ -15,6 +15,7 @@ import { PortalComponent } from './portal.component';
 import { NavigationComponent } from './shared/navigation/navigation.component';
 import { BookingComponent } from './booking/booking.component';
 import { CreateReservationComponent } from './create-reservation/create-reservation.component';
+import { ChooseCampsiteComponent } from './choose-campsite/choose-campsite.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,8 @@ import { CreateReservationComponent } from './create-reservation/create-reservat
     NavigationComponent,
     DashboardComponent,
     BookingComponent,
-    CreateReservationComponent
+    CreateReservationComponent,
+    ChooseCampsiteComponent
   ]
 })
 export class PortalModule { }
