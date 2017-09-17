@@ -39,16 +39,12 @@ export class BookingService {
       })
   }
 
-  getCampsiteAreas() {
+  getCampsiteAreas(fromDate:Date, toDate:Date) {
     let options = new RequestOptions({headers: this.getHeaders()});
-
-    let areas = [
-      {name: "dk"},
-      {name: "nc"},
-      {name: "gb-gbn"}
-    ];
-
-    return areas;
+    return this.authHttp.get(`api/areas/${this.authService.campsite.id}/${fromDate.toISOString()}/${toDate.toISOString()}`, options)
+      .map((response: Response) => {
+        return response.json();
+      })
   }
 
   private getHeaders() {

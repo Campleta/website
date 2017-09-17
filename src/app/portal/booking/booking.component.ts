@@ -8,7 +8,7 @@ import {
 } from '@angular/animations';
 import { BookingService } from './../../services/booking.service';
 import { AuthenticationService } from './../../services/authentication.service';
- 
+
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
@@ -19,22 +19,33 @@ import { AuthenticationService } from './../../services/authentication.service';
       state('1', style({ backgroundColor: '#5cb85c' })),
       transition('0 => 1', animate('200ms ease-in')),
       transition('1 => 0', animate('200ms ease-out'))
+    ]),
+    trigger('areaHover', [
+      state('0', style({ opacity: '0.2' })),
+      state('1', style({ opacity: '1' })),
+      transition('0 => 1', animate('200ms ease-in')),
+      transition('1 => 0', animate('200ms ease-out'))
     ])
   ]
 })
 export class BookingComponent implements OnInit {
 
+  occupiedColor = "rgba(251, 24, 24, .5)";
+  partlyOccupied = "rgba(251, 221, 24, .5)";
+
   lastClicked;
   hoverElem;
-  startColor = "c0c0c0";
-  fillColor = "d9edf7";
+  startColor = "rgba(192, 192, 192, .5)";
+  fillColor = "rgba(92, 184, 92, 0.5)";
   selectColor = "blue";
   startStroke = "6.11153841";
   hoverStroke = "8";
   reservations: any = [];
 
+  hoveredElem = null;
+
   areas: any = [];
-  
+
   spot: any = {};
   hoveredReservation: number;
   map;
@@ -48,20 +59,17 @@ export class BookingComponent implements OnInit {
     this.getReservations();
   }
 
-  selectElem(elem) {
-    if(this.lastClicked != null) {
-      this.lastClicked.srcElement.style.fill = this.startColor;
-    }
+  setHoverElem(elem) {
+    this.hoveredElem = elem.srcElement;
+    this.hoveredElem.style.fill = this.fillColor;
+  }
 
-    if(this.lastClicked != null && this.lastClicked.srcElement === elem.srcElement) {
-      this.lastClicked.srcElement.style.fill = this.startColor;
-      this.lastClicked = null;
-    } else {
-      elem.srcElement.style.fill = this.fillColor;
-      this.lastClicked = elem;
+  removeHoverElem(elem) {
+    let area = this.areas.find(x => x.Name === elem.srcElement.id);
+    if(area) {
+      this.hoveredElem.style.fill = area.color;
+      this.hoveredElem = null;
     }
-
-    this.getItemInfo(this.lastClicked);
   }
 
   setHoveredReservation(index) {
@@ -72,11 +80,6 @@ export class BookingComponent implements OnInit {
     this.hoveredReservation = null;
   }
 
-  getItemInfo(elem) {
-    this.spot.name = "test";
-    this.spot.id = elem.srcElement.id;
-  }
-
   setMapData(event) {
     this.map = event;
     this.getAreas();
@@ -84,15 +87,31 @@ export class BookingComponent implements OnInit {
 
   updateMapData() {
     this.areas.forEach(element => {
-      var elem = this.map.querySelector("#"+element.name);
-      elem.style.fill = "red";
+      var elem = this.map.querySelector("#" + element.Name);
+      if (!element.Available) {
+        elem.style.fill = this.occupiedColor;
+        element.color = this.occupiedColor;
+      } else {
+        elem.style.fill = this.startColor;
+        element.color = this.startColor;
+      }
     });
   }
 
   private getAreas() {
-    this.areas = this.bookingService.getCampsiteAreas();
-
-    this.updateMapData();
+    let fromDate = new Date();
+    fromDate.setHours(12);
+    fromDate.setMinutes(0);
+    fromDate.setMilliseconds(0);
+    let toDate = new Date();
+    toDate.setHours(11);
+    toDate.setMinutes(59);
+    toDate.setMilliseconds(0);
+    this.bookingService.getCampsiteAreas(fromDate, toDate)
+      .subscribe(res => {
+        this.areas = res;
+        this.updateMapData();
+      });
   }
 
   private getReservations() {
