@@ -33,29 +33,29 @@ export class BookingComponent implements OnInit {
   occupiedColor = "rgba(251, 24, 24, .5)";
   partlyOccupied = "rgba(251, 221, 24, .5)";
 
-  lastClicked;
   hoverElem;
   startColor = "rgba(192, 192, 192, .5)";
   fillColor = "rgba(92, 184, 92, 0.5)";
-  selectColor = "blue";
-  startStroke = "6.11153841";
-  hoverStroke = "8";
   reservations: any = [];
 
   hoveredElem = null;
+  selectedReservation: any = {};
 
   areas: any = [];
-
-  spot: any = {};
   hoveredReservation: number;
   map;
+  fromDate:Date;
+  toDate:Date;
 
   constructor(
     private bookingService: BookingService,
     public authService: AuthenticationService) { }
 
   ngOnInit() {
-    this.lastClicked
+    this.fromDate = new Date();
+    this.toDate = new Date();
+    this.initNowDates();
+   
     this.getReservations();
   }
 
@@ -98,16 +98,20 @@ export class BookingComponent implements OnInit {
     });
   }
 
+  selectReservation(res) {
+    if(this.selectedReservation == res) {
+      this.selectedReservation = null;
+      this.initNowDates();
+    } else {
+      this.selectedReservation = res;
+      this.fromDate = new Date(res.startDate);
+      this.toDate = new Date(res.endDate);
+    }
+    this.getAreas();
+  }
+
   private getAreas() {
-    let fromDate = new Date();
-    fromDate.setHours(12);
-    fromDate.setMinutes(0);
-    fromDate.setMilliseconds(0);
-    let toDate = new Date();
-    toDate.setHours(11);
-    toDate.setMinutes(59);
-    toDate.setMilliseconds(0);
-    this.bookingService.getCampsiteAreas(fromDate, toDate)
+    this.bookingService.getCampsiteAreas(this.fromDate, this.toDate)
       .subscribe(res => {
         this.areas = res;
         this.updateMapData();
@@ -119,6 +123,20 @@ export class BookingComponent implements OnInit {
       .subscribe(data => {
         this.reservations = data;
       });
+  }
+
+  private initNowDates() {
+    // From date
+    this.fromDate = new Date();
+    this.fromDate.setHours(12);
+    this.fromDate.setMinutes(0);
+    this.fromDate.setSeconds(0);
+
+    // To date
+    this.toDate = new Date();
+    this.toDate.setHours(11);
+    this.toDate.setMinutes(59);
+    this.toDate.setSeconds(0);
   }
 
 }
