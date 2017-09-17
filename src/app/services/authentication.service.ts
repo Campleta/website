@@ -75,6 +75,7 @@ export class AuthenticationService {
     this.currentUser = null;
     this.campsite = null;
     localStorage.removeItem("campleta");
+    localStorage.removeItem("campsite");
   }
 
   public setCampsite(response) {
