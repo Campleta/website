@@ -114,6 +114,7 @@ export class BookingComponent implements OnInit {
     this.bookingService.getCampsiteAreas(this.fromDate, this.toDate)
       .subscribe(res => {
         this.areas = res;
+        console.log(res);
         this.updateMapData();
       });
   }
