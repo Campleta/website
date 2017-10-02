@@ -7,6 +7,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { MyDatePickerModule } from 'mydatepicker';
 import { SharedModule } from './../shared/shared.module';
 import { DirectivesModule } from './../directives/directives.module';
+import { DragulaModule } from 'ng2-dragula';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -23,6 +24,7 @@ import { ChooseCampsiteComponent } from './choose-campsite/choose-campsite.compo
     FormsModule,
     InlineSVGModule,
     SharedModule,
+    DragulaModule,
     DirectivesModule,
     MyDatePickerModule,
     DropdownModule,

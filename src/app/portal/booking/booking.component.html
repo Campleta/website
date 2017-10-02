@@ -7,7 +7,7 @@
         <button routerLink="/portal/booking/create" class="btn btn-campleta pull-right">Create</button>
       </div>
 
-      <ul class="list-group">
+      <ul class="list-group" [dragula]='"bag-one"' [dragulaModel]="reservations">
         <li *ngFor="let reservation of reservations; let i = index;" class="list-group-item clearfix" [@reservationsHover]="i == hoveredReservation"
           (mouseover)="setHoveredReservation(i)" (mouseout)="removeHoveredReservation()" (click)="selectReservation(reservation)">
           <i class="pull-left glyphicon" [ngClass]="{ 'glyphicon-chevron-right': selectedReservation == reservation }"></i>

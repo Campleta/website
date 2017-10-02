@@ -8,11 +8,15 @@ import {
 } from '@angular/animations';
 import { BookingService } from './../../services/booking.service';
 import { AuthenticationService } from './../../services/authentication.service';
+import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.css'],
+  styleUrls: [
+    './booking.component.css',
+    './../../../../node_modules/dragula/dist/dragula.css'
+  ],
   animations: [
     trigger('reservationsHover', [
       state('0', style({ backgroundColor: 'transparent' })),
@@ -49,6 +53,7 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private bookingService: BookingService,
+    private dragulaService: DragulaService,
     public authService: AuthenticationService) { }
 
   ngOnInit() {
@@ -57,6 +62,9 @@ export class BookingComponent implements OnInit {
     this.initNowDates();
    
     this.getReservations();
+    this.dragulaService.drag.subscribe((value) => {
+      console.log(value);
+    });
   }
 
   setHoverElem(elem) {
@@ -114,7 +122,6 @@ export class BookingComponent implements OnInit {
     this.bookingService.getCampsiteAreas(this.fromDate, this.toDate)
       .subscribe(res => {
         this.areas = res;
-        console.log(res);
         this.updateMapData();
       });
   }
