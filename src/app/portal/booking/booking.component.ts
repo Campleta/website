@@ -134,6 +134,7 @@ export class BookingComponent implements OnInit {
 
     // To date
     this.toDate = new Date();
+    this.toDate.setDate(this.toDate.getDate() + 1);
     this.toDate.setHours(11);
     this.toDate.setMinutes(59);
     this.toDate.setSeconds(0);
