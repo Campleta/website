@@ -20,6 +20,15 @@ export class BookingService {
       });
   }
 
+  addAreaToReservation(reservationId:number, areaId:number) {
+    let options = new RequestOptions({headers: this.getHeaders()});
+
+    return this.authHttp.put(`api/reservations/${reservationId}/area`, JSON.stringify({"areaId": areaId}), options)
+      .map((response: Response) => {
+        return response.json();
+      });
+  }
+
   getNotPlacedReservations() {
     let options = new RequestOptions({headers: this.getHeaders()});
 

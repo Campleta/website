@@ -8,7 +8,9 @@ import {
 } from '@angular/animations';
 import { BookingService } from './../../services/booking.service';
 import { AuthenticationService } from './../../services/authentication.service';
-import { DragulaService } from 'ng2-dragula/ng2-dragula';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
+import { ModalComponent } from './../../directives/modal/modal.component';
 
 @Component({
   selector: 'app-booking',
@@ -34,6 +36,8 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 })
 export class BookingComponent implements OnInit {
 
+  bsModalRef: BsModalRef;
+
   occupiedColor = "rgba(251, 24, 24, .5)";
   partlyOccupied = "rgba(251, 221, 24, .5)";
 
@@ -53,8 +57,11 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private bookingService: BookingService,
-    private dragulaService: DragulaService,
-    public authService: AuthenticationService) { }
+    private modalService: BsModalService,
+    public authService: AuthenticationService) {
+
+    
+  }
 
   ngOnInit() {
     this.fromDate = new Date();
@@ -62,9 +69,27 @@ export class BookingComponent implements OnInit {
     this.initNowDates();
    
     this.getReservations();
-    this.dragulaService.drag.subscribe((value) => {
-      console.log(value);
-    });
+  }
+
+  onReservationDrop(res: any) {
+    console.log(res);
+    let tmpArea = this.areas.find(x => x.Name == res.nativeEvent.target.id);
+    console.log(tmpArea);
+
+    if(tmpArea.Available) {
+      this.bsModalRef = this.modalService.show(ModalComponent);
+      this.bsModalRef.content.title = "Place reservation";
+      this.bsModalRef.content.text = "Are you sure you want to place the reservation on " + tmpArea.Name + "?";
+      this.bsModalRef.content.modalResponse.subscribe(result => {
+        if(result) {
+          this.bookingService.addAreaToReservation(res.dragData.id, tmpArea.Id)
+            .subscribe(result => {
+              this.getAreas();
+              this.getReservations();
+          });
+        }
+      });
+    }
   }
 
   setHoverElem(elem) {
