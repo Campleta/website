@@ -16,8 +16,7 @@ import { ModalComponent } from './../../directives/modal/modal.component';
   selector: 'app-booking',
   templateUrl: './booking.component.html',
   styleUrls: [
-    './booking.component.css',
-    './../../../../node_modules/dragula/dist/dragula.css'
+    './booking.component.css'
   ],
   animations: [
     trigger('reservationsHover', [
