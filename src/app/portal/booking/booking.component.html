@@ -8,7 +8,8 @@
       </div>
 
       <ul class="list-group">
-        <li *ngFor="let reservation of reservations; let i = index;" [dragData]="reservation" draggable="reservation" class="list-group-item clearfix"
+        <li *ngFor="let reservation of reservations; let i = index;" [dragData]="reservation" draggable="reservation" 
+          (onDragStart)="onReservationDrag(reservation)" (onDragEnd)="onReservationDragEnd(reservation)" class="list-group-item clearfix"
           [@reservationsHover]="i == hoveredReservation" (mouseover)="setHoveredReservation(i)" (mouseout)="removeHoveredReservation()"
           (click)="selectReservation(reservation)">
           <i class="pull-left glyphicon" [ngClass]="{ 'glyphicon-chevron-right': selectedReservation == reservation }"></i>

@@ -70,10 +70,20 @@ export class BookingComponent implements OnInit {
     this.getReservations();
   }
 
+  onReservationDrag(res: any) {
+    this.selectedReservation = res;
+    this.fromDate = new Date(res.startDate);
+    this.toDate = new Date(res.endDate);
+    this.getAreas();
+  }
+
+  onReservationDragEnd(res: any) {
+    this.initNowDates();
+    this.getAreas();
+  }
+
   onReservationDrop(res: any) {
-    console.log(res);
     let tmpArea = this.areas.find(x => x.Name == res.nativeEvent.target.id);
-    console.log(tmpArea);
 
     if(tmpArea.Available) {
       this.bsModalRef = this.modalService.show(ModalComponent);
