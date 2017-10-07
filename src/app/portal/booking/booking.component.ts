@@ -8,11 +8,16 @@ import {
 } from '@angular/animations';
 import { BookingService } from './../../services/booking.service';
 import { AuthenticationService } from './../../services/authentication.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
+import { ModalComponent } from './../../directives/modal/modal.component';
 
 @Component({
   selector: 'app-booking',
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.css'],
+  styleUrls: [
+    './booking.component.css'
+  ],
   animations: [
     trigger('reservationsHover', [
       state('0', style({ backgroundColor: 'transparent' })),
@@ -29,6 +34,8 @@ import { AuthenticationService } from './../../services/authentication.service';
   ]
 })
 export class BookingComponent implements OnInit {
+
+  bsModalRef: BsModalRef;
 
   occupiedColor = "rgba(251, 24, 24, .5)";
   partlyOccupied = "rgba(251, 221, 24, .5)";
@@ -49,7 +56,11 @@ export class BookingComponent implements OnInit {
 
   constructor(
     private bookingService: BookingService,
-    public authService: AuthenticationService) { }
+    private modalService: BsModalService,
+    public authService: AuthenticationService) {
+
+    
+  }
 
   ngOnInit() {
     this.fromDate = new Date();
@@ -57,6 +68,37 @@ export class BookingComponent implements OnInit {
     this.initNowDates();
    
     this.getReservations();
+  }
+
+  onReservationDrag(res: any) {
+    this.selectedReservation = res;
+    this.fromDate = new Date(res.startDate);
+    this.toDate = new Date(res.endDate);
+    this.getAreas();
+  }
+
+  onReservationDragEnd(res: any) {
+    this.initNowDates();
+    this.getAreas();
+  }
+
+  onReservationDrop(res: any) {
+    let tmpArea = this.areas.find(x => x.Name == res.nativeEvent.target.id);
+
+    if(tmpArea.Available) {
+      this.bsModalRef = this.modalService.show(ModalComponent);
+      this.bsModalRef.content.title = "Place reservation";
+      this.bsModalRef.content.text = "Are you sure you want to place the reservation on " + tmpArea.Name + "?";
+      this.bsModalRef.content.modalResponse.subscribe(result => {
+        if(result) {
+          this.bookingService.addAreaToReservation(res.dragData.id, tmpArea.Id)
+            .subscribe(result => {
+              this.getAreas();
+              this.getReservations();
+          });
+        }
+      });
+    }
   }
 
   setHoverElem(elem) {
@@ -114,7 +156,6 @@ export class BookingComponent implements OnInit {
     this.bookingService.getCampsiteAreas(this.fromDate, this.toDate)
       .subscribe(res => {
         this.areas = res;
-        console.log(res);
         this.updateMapData();
       });
   }

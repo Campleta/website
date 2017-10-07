@@ -8,8 +8,10 @@
       </div>
 
       <ul class="list-group">
-        <li *ngFor="let reservation of reservations; let i = index;" class="list-group-item clearfix" [@reservationsHover]="i == hoveredReservation"
-          (mouseover)="setHoveredReservation(i)" (mouseout)="removeHoveredReservation()" (click)="selectReservation(reservation)">
+        <li *ngFor="let reservation of reservations; let i = index;" [dragData]="reservation" draggable="reservation" 
+          (onDragStart)="onReservationDrag(reservation)" (onDragEnd)="onReservationDragEnd(reservation)" class="list-group-item clearfix"
+          [@reservationsHover]="i == hoveredReservation" (mouseover)="setHoveredReservation(i)" (mouseout)="removeHoveredReservation()"
+          (click)="selectReservation(reservation)">
           <i class="pull-left glyphicon" [ngClass]="{ 'glyphicon-chevron-right': selectedReservation == reservation }"></i>
           <span class="pull-left">{{ reservation.stays[0].guests[0].lastname }}</span>
           <small class="pull-right">{{ reservation.startDate | date: 'dd-MM-yyyy' }}</small>
@@ -25,8 +27,8 @@
     </div>
 
     <div class="jumbotron">
-      <div [inlineSVG]="'../assets/images/Countries_Europe.svg'" id="map" #map (onSVGInserted)="setMapData($event)" (mouseover)="setHoverElem($event)"
-        (mouseout)="removeHoverElem($event)" style="width:100%;"></div>
+      <div [inlineSVG]="'../assets/images/Countries_Europe.svg'" id="map" #map (onSVGInserted)="setMapData($event)" droppable (onDrop)="onReservationDrop($event)"
+        (mouseover)="setHoverElem($event)" (mouseout)="removeHoverElem($event)" style="width:100%;"></div>
     </div>
   </div>
 </div>

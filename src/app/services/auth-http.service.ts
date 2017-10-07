@@ -24,6 +24,10 @@ export class AuthHttpService extends Http {
     return super.post(`${environment.baseApi}/` + url, body, this.addJWT(options)).catch(this.handleError);
   }
 
+  put(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+    return super.put(`${environment.baseApi}/` + url, body, this.addJWT(options)).catch(this.handleError);
+  }
+
   private addJWT(options?: RequestOptionsArgs): RequestOptionsArgs {
     options = options || new RequestOptions();
     options.headers = options.headers || new Headers();
