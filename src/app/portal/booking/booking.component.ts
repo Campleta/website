@@ -11,6 +11,7 @@ import { AuthenticationService } from './../../services/authentication.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { ModalComponent } from './../../directives/modal/modal.component';
+import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 
 @Component({
   selector: 'app-booking',
@@ -36,6 +37,15 @@ import { ModalComponent } from './../../directives/modal/modal.component';
 export class BookingComponent implements OnInit {
 
   bsModalRef: BsModalRef;
+  myDatePickerOptions: IMyDpOptions = {
+    dateFormat: 'dd-mm-yyyy',
+    markCurrentDay: true,
+    markCurrentMonth: true,
+    markCurrentYear: true,
+    openSelectorOnInputClick: true,
+  };
+  fromDate: any; //= { date: { day: 0, month: 0, year: 0 }};
+  toDate: any; //= { date: { day: 0, month: 0, year: 0 }};
 
   occupiedColor = "rgba(251, 24, 24, .5)";
   partlyOccupied = "rgba(251, 221, 24, .5)";
@@ -51,8 +61,6 @@ export class BookingComponent implements OnInit {
   areas: any = [];
   hoveredReservation: number;
   map;
-  fromDate:Date;
-  toDate:Date;
 
   constructor(
     private bookingService: BookingService,
@@ -63,17 +71,27 @@ export class BookingComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fromDate = new Date();
-    this.toDate = new Date();
-    this.initNowDates();
-   
     this.getReservations();
   }
 
   onReservationDrag(res: any) {
+    let startDate = new Date(res.startDate);
+    let endDate = new Date(res.endDate);
     this.selectedReservation = res;
-    this.fromDate = new Date(res.startDate);
-    this.toDate = new Date(res.endDate);
+    this.fromDate = {
+      date: {
+        day: startDate.getDate(),
+        month: startDate.getMonth() + 1,
+        year: startDate.getFullYear()
+      }
+    }
+    this.toDate = {
+      date: {
+        day: endDate.getDate(),
+        month: endDate.getMonth() + 1,
+        year: endDate.getFullYear()
+      }
+    }
     this.getAreas();
   }
 
@@ -101,6 +119,28 @@ export class BookingComponent implements OnInit {
     }
   }
 
+  onDateChanged(event: IMyDateModel, model) {
+    if(model == "fromDate") {
+      this.fromDate = { 
+        date: { 
+          day: event.date.day, 
+          month: event.date.month,
+          year: event.date.year 
+        }
+      }
+    } else if(model == "toDate") {
+      this.toDate = { 
+        date: { 
+          day: event.date.day, 
+          month: event.date.month,
+          year: event.date.year 
+        }
+      }
+    }
+
+    this.getAreas();
+  }
+
   setHoverElem(elem) {
     this.hoveredElem = elem.srcElement;
     this.hoveredElem.style.fill = this.fillColor;
@@ -124,6 +164,7 @@ export class BookingComponent implements OnInit {
 
   setMapData(event) {
     this.map = event;
+    this.initNowDates();
     this.getAreas();
   }
 
@@ -153,7 +194,23 @@ export class BookingComponent implements OnInit {
   }
 
   private getAreas() {
-    this.bookingService.getCampsiteAreas(this.fromDate, this.toDate)
+    let startDate = new Date();
+    let endDate = new Date();
+    startDate.setDate(this.fromDate.date.day);
+    startDate.setMonth(this.fromDate.date.month);
+    startDate.setFullYear(this.fromDate.date.year);
+    startDate.setHours(12);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+
+    endDate.setDate(this.toDate.date.day);
+    endDate.setMonth(this.toDate.date.month);
+    endDate.setFullYear(this.toDate.date.year);
+    endDate.setHours(11);
+    endDate.setMinutes(59);
+    endDate.setSeconds(0);
+
+    this.bookingService.getCampsiteAreas(startDate, endDate)
       .subscribe(res => {
         this.areas = res;
         this.updateMapData();
@@ -168,18 +225,21 @@ export class BookingComponent implements OnInit {
   }
 
   private initNowDates() {
-    // From date
-    this.fromDate = new Date();
-    this.fromDate.setHours(12);
-    this.fromDate.setMinutes(0);
-    this.fromDate.setSeconds(0);
-
-    // To date
-    this.toDate = new Date();
-    this.toDate.setDate(this.toDate.getDate() + 1);
-    this.toDate.setHours(11);
-    this.toDate.setMinutes(59);
-    this.toDate.setSeconds(0);
+    let date = new Date();
+    this.fromDate = { 
+      date: { 
+        day: date.getDate(), 
+        month: date.getMonth() + 1, // // Month attribute is 0-index
+        year: date.getFullYear() 
+      }
+    }
+    this.toDate = { 
+      date: { 
+        day: date.getDate() + 1, 
+        month: date.getMonth() + 1, // Month attribute is 0-index
+        year: date.getFullYear() 
+      }
+    }
   }
 
 }

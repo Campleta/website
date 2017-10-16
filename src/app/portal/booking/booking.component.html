@@ -8,10 +8,9 @@
       </div>
 
       <ul class="list-group">
-        <li *ngFor="let reservation of reservations; let i = index;" [dragData]="reservation" draggable="reservation" 
-          (onDragStart)="onReservationDrag(reservation)" (onDragEnd)="onReservationDragEnd(reservation)" class="list-group-item clearfix"
-          [@reservationsHover]="i == hoveredReservation" (mouseover)="setHoveredReservation(i)" (mouseout)="removeHoveredReservation()"
-          (click)="selectReservation(reservation)">
+        <li *ngFor="let reservation of reservations; let i = index;" [dragData]="reservation" draggable="reservation" (onDragStart)="onReservationDrag(reservation)"
+          (onDragEnd)="onReservationDragEnd(reservation)" class="list-group-item clearfix" [@reservationsHover]="i == hoveredReservation"
+          (mouseover)="setHoveredReservation(i)" (mouseout)="removeHoveredReservation()" (click)="selectReservation(reservation)">
           <i class="pull-left glyphicon" [ngClass]="{ 'glyphicon-chevron-right': selectedReservation == reservation }"></i>
           <span class="pull-left">{{ reservation.stays[0].guests[0].lastname }}</span>
           <small class="pull-right">{{ reservation.startDate | date: 'dd-MM-yyyy' }}</small>
@@ -22,8 +21,21 @@
 
   <div class="col-lg-9 col-lg-offset-0 col-md-9 col-md-offset-0 col-sm-8 col-sm-offset-0 col-xs-10 col-xs-offset-1">
     <div class="clearfix">
-      <span class="pull-left">{{ fromDate | date }}</span>
-      <span class="pull-right">{{ toDate | date }}</span>
+
+      <!-- Start date -->
+      <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+        <label>From date</label>
+        <my-date-picker name="fromDate" [options]="myDatePickerOptions" [(ngModel)]="fromDate" (dateChanged)="onDateChanged($event, 'fromDate')"></my-date-picker>
+      </div>
+
+      <!-- End date -->
+      <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+        <label>To date</label>
+        <my-date-picker name="toDate" [(options)]="myDatePickerOptions" [(ngModel)]="toDate" (dateChanged)="onDateChanged($event, 'toDate')"></my-date-picker>
+      </div>
+
+      <!--<span class="pull-left">{{ fromDate | date }}</span>
+      <span class="pull-right">{{ toDate | date }}</span>-->
     </div>
 
     <div class="jumbotron">
