@@ -33,14 +33,12 @@
         <label>To date</label>
         <my-date-picker name="toDate" [(options)]="myDatePickerOptions" [(ngModel)]="toDate" (dateChanged)="onDateChanged($event, 'toDate')"></my-date-picker>
       </div>
-
-      <!--<span class="pull-left">{{ fromDate | date }}</span>
-      <span class="pull-right">{{ toDate | date }}</span>-->
     </div>
 
     <div class="jumbotron">
-      <div [inlineSVG]="'../assets/images/Countries_Europe.svg'" id="map" #map (onSVGInserted)="setMapData($event)" droppable (onDrop)="onReservationDrop($event)"
-        (mouseover)="setHoverElem($event)" (mouseout)="removeHoverElem($event)" style="width:100%;"></div>
+      <div [inlineSVG]="'../assets/images/Countries_Europe.svg'" id="map" #map (onSVGInserted)="setMapData($event)" 
+        droppable (onDrop)="onReservationDrop($event)" (mouseover)="setHoverElem($event)" 
+        (mouseout)="removeHoverElem($event)" (click)="displayAreaInfo($event)" style="width:100%;"></div>
     </div>
   </div>
 </div>

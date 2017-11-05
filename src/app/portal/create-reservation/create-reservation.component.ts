@@ -67,17 +67,24 @@ export class CreateReservationComponent implements OnInit {
     this.model.campsite = this.authService.campsite.id;
     this.model.areaType = this.spotType;
     this.model.stays = [];
-    let startDateStr = this.setDate(this.startDate);
-    let endDateStr = this.setDate(this.endDate);
-    this.model.stays.push({ "guests": this.persons.filter(guest => this.validateGuests(guest)), "startDate": startDateStr, "endDate": endDateStr });
-    this.model.startDate = startDateStr;
-    this.model.endDate = endDateStr;
+    let startDate = this.setDate(this.startDate);
+    let endDate = this.setDate(this.endDate);
+    startDate.setMonth(startDate.getMonth() -1);
+    startDate.setHours(12);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
+    endDate.setMonth(endDate.getMonth() -1);
+    endDate.setHours(11);
+    endDate.setMinutes(59);
+    endDate.setSeconds(0);
+    this.model.stays.push({ "guests": this.persons.filter(guest => this.validateGuests(guest)), "startDate": startDate.toISOString(), "endDate": endDate.toISOString() });
+    this.model.startDate = startDate.toISOString();
+    this.model.endDate = endDate.toISOString();
 
     let json: String = JSON.stringify(this.model);
 
     this.bookingService.createReservation(json)
       .subscribe(data => {
-        console.log("test");
         this.spinnerService.hide("create-reservation-spinner");
         this.alertService.success("Success");
         this.router.navigate(["/portal/booking"]);
@@ -93,7 +100,7 @@ export class CreateReservationComponent implements OnInit {
     returnDate.setDate(date.date.day);
     returnDate.setMonth(date.date.month);
     returnDate.setFullYear(date.date.year);
-    return returnDate.toISOString();
+    return returnDate;
   }
 
   private validateGuests(guest: Guest) {

@@ -11,6 +11,7 @@ import { AuthenticationService } from './../../services/authentication.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { ModalComponent } from './../../directives/modal/modal.component';
+import { AreaModalComponent } from './../../directives/area-modal/area-modal.component';
 import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 
 @Component({
@@ -67,7 +68,7 @@ export class BookingComponent implements OnInit {
     private modalService: BsModalService,
     public authService: AuthenticationService) {
 
-    
+
   }
 
   ngOnInit() {
@@ -103,37 +104,37 @@ export class BookingComponent implements OnInit {
   onReservationDrop(res: any) {
     let tmpArea = this.areas.find(x => x.Name == res.nativeEvent.target.id);
 
-    if(tmpArea.Available) {
+    if (tmpArea.Available) {
       this.bsModalRef = this.modalService.show(ModalComponent);
       this.bsModalRef.content.title = "Place reservation";
       this.bsModalRef.content.text = "Are you sure you want to place the reservation on " + tmpArea.Name + "?";
       this.bsModalRef.content.modalResponse.subscribe(result => {
-        if(result) {
+        if (result) {
           this.bookingService.addAreaToReservation(res.dragData.id, tmpArea.Id)
             .subscribe(result => {
               this.getAreas();
               this.getReservations();
-          });
+            });
         }
       });
     }
   }
 
   onDateChanged(event: IMyDateModel, model) {
-    if(model == "fromDate") {
-      this.fromDate = { 
-        date: { 
-          day: event.date.day, 
+    if (model == "fromDate") {
+      this.fromDate = {
+        date: {
+          day: event.date.day,
           month: event.date.month,
-          year: event.date.year 
+          year: event.date.year
         }
       }
-    } else if(model == "toDate") {
-      this.toDate = { 
-        date: { 
-          day: event.date.day, 
+    } else if (model == "toDate") {
+      this.toDate = {
+        date: {
+          day: event.date.day,
           month: event.date.month,
-          year: event.date.year 
+          year: event.date.year
         }
       }
     }
@@ -148,7 +149,7 @@ export class BookingComponent implements OnInit {
 
   removeHoverElem(elem) {
     let area = this.areas.find(x => x.Name === elem.srcElement.id);
-    if(area) {
+    if (area) {
       this.hoveredElem.style.fill = area.color;
       this.hoveredElem = null;
     }
@@ -181,14 +182,41 @@ export class BookingComponent implements OnInit {
     });
   }
 
+  displayAreaInfo(area) {
+    let tmpArea = this.areas.find(x => x.Name == area.srcElement.id);
+
+    this.bsModalRef = this.modalService.show(AreaModalComponent);
+    this.bsModalRef.content.title = tmpArea.Name;
+    this.bsModalRef.content.area = tmpArea;
+    this.bsModalRef.content.modalResponse.subscribe(result => {
+    });
+    this.bookingService.getNowReservationForArea(tmpArea.Id).subscribe(result => {
+      this.bsModalRef.content.reservations = result;
+    });
+  }
+
   selectReservation(res) {
-    if(this.selectedReservation == res) {
+    if (this.selectedReservation == res) {
       this.selectedReservation = null;
       this.initNowDates();
     } else {
       this.selectedReservation = res;
-      this.fromDate = new Date(res.startDate);
-      this.toDate = new Date(res.endDate);
+      let startDate = new Date(res.startDate);
+      let endDate = new Date(res.endDate);
+      this.fromDate = {
+        date: {
+          day: startDate.getDate(),
+          month: startDate.getMonth() + 1, // // Month attribute is 0-index
+          year: startDate.getFullYear()
+        }
+      }
+      this.toDate = {
+        date: {
+          day: endDate.getDate(),
+          month: endDate.getMonth() + 1, // // Month attribute is 0-index
+          year: endDate.getFullYear()
+        }
+      }
     }
     this.getAreas();
   }
@@ -226,18 +254,18 @@ export class BookingComponent implements OnInit {
 
   private initNowDates() {
     let date = new Date();
-    this.fromDate = { 
-      date: { 
-        day: date.getDate(), 
+    this.fromDate = {
+      date: {
+        day: date.getDate(),
         month: date.getMonth() + 1, // // Month attribute is 0-index
-        year: date.getFullYear() 
+        year: date.getFullYear()
       }
     }
-    this.toDate = { 
-      date: { 
-        day: date.getDate() + 1, 
+    this.toDate = {
+      date: {
+        day: date.getDate() + 1,
         month: date.getMonth() + 1, // Month attribute is 0-index
-        year: date.getFullYear() 
+        year: date.getFullYear()
       }
     }
   }

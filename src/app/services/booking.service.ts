@@ -50,10 +50,26 @@ export class BookingService {
 
   getCampsiteAreas(fromDate:Date, toDate:Date) {
     let options = new RequestOptions({headers: this.getHeaders()});
-    return this.authHttp.get(`api/areas/${this.authService.campsite.id}/${fromDate.toISOString()}/${toDate.toISOString()}`, options)
+    return this.authHttp.get(`api/areas/campsite/${this.authService.campsite.id}/${fromDate.toISOString()}/${toDate.toISOString()}`, options)
       .map((response: Response) => {
         return response.json();
-      })
+      });
+  }
+
+  getNowReservationForArea(areaId: Number) {
+    let options = new RequestOptions({headers: this.getHeaders()});
+    return this.authHttp.get(`api/areas/${areaId}/reservations/now`, options)
+      .map((response: Response) => {
+        return response.json();
+      });
+  }
+
+  getArea(id: Number) {
+    let options = new RequestOptions({headers: this.getHeaders()});
+    return this.authHttp.get(`api/areas/${id}`, options)
+      .map((response: Response) => {
+        return response.json();
+      });
   }
 
   private getHeaders() {
