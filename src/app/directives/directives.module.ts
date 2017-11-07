@@ -5,18 +5,21 @@ import { FormsModule }         from '@angular/forms';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { AlertComponent } from './alert/alert.component';
 import { ModalComponent } from './modal/modal.component';
+import { AreaModalComponent } from './area-modal/area-modal.component';
+import { SharedModule } from './../shared/shared.module';
  
 @NgModule({
     imports:      [ 
-        CommonModule 
+        CommonModule,
+        SharedModule
     ],
     declarations: [ 
         SpinnerComponent, 
         AlertComponent, 
-        ModalComponent
+        ModalComponent, AreaModalComponent
     ],
     entryComponents: [
-        ModalComponent
+        ModalComponent, AreaModalComponent
     ],
     exports: [ 
         SpinnerComponent,
