@@ -20,14 +20,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     openSelectorOnInputClick: true,
   };
   id: Number;
-  reservation: any = {};
   private sub: any;
-  amountPersons: Number;
-  persons: Array<Guest> = [
-  ];
-  startDate: any = { date: { day: 0, month: 0, year: 0 }};
-  endDate: any = { date: { day: 0, month: 0, year: 0 }};
-  stays: any = [];
+  availableSpots: Number = 0;
 
   editReservationForm: FormGroup;
 
