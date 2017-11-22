@@ -3,7 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BookingService } from './../../services/booking.service';
 import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
-import { FormGroup, FormArray, FormControl } from '@angular/forms/src/model';
+import { Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -40,6 +40,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.editReservationForm = this.formBuilder.group({
+        reservationStartDate: [null],
+        reservationEndDate: [null],
         staysArray: this.formBuilder.array([])
       });
       this.loadReservation(this.id);
@@ -135,23 +137,31 @@ export class EditReservationComponent implements OnInit, OnDestroy {
 
   private loadReservation(id: Number) {
     this.bookingService.getReservation(id).subscribe(response => {
-      /*this.reservation = response;
-      let persons = 0;
-      response.stays.forEach(element => {
-        persons += element.guests.length;
-        element.guests.forEach(g => {
-          this.persons.push(g);
-        });
-      });
-      this.stays = response.stays;
-      this.amountPersons = persons;*/
 
+      // Set Reservation dates.
+      let resStart = new Date(response.startDate);
+      let resEnd = new Date(response.endDate);
+      this.editReservationForm.patchValue({
+        reservationStartDate: {
+          date: {
+            year: resStart.getFullYear(),
+            month: resStart.getMonth() + 1,
+            day: resStart.getDate()
+          }
+        },
+        reservationEndDate: {
+          date: {
+            year: resEnd.getFullYear(),
+            month: resEnd.getMonth() + 1,
+            day: resEnd.getDate()
+          }
+        }
+      });
+
+      // Add stays with guests.
       response.stays.forEach(element => {
-        console.log(element);
         this.addStayWithData(element);
       });
-
-      console.log(response);
     });
   }
 

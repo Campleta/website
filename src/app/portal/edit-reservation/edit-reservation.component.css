@@ -4,3 +4,11 @@
     margin-bottom: 30px;
     margin-top: 30px; 
 }
+.remove-icon {
+    cursor: pointer;
+    padding: 3px;
+    border-radius: 5px;
+}
+.remove-icon:hover {
+    background-color: #dbdbdb;
+}

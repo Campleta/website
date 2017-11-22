@@ -9,7 +9,7 @@
 
         <div class="panel-heading" [formGroupName]="in">
           <div class="form-group">
-            <i class="glyphicon glyphicon-remove pull-right" *ngIf="in + 1 > 1" (click)="removeStay(in)"></i>
+            <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="in + 1 > 1" (click)="removeStay(in)"></i>
           </div>
 
           <div class="clearfix">
@@ -31,7 +31,7 @@
                     <input type="checkbox" formControlName="anonymous" />
                   </div>
 
-                  <i class="glyphicon glyphicon-remove pull-right" *ngIf="i+1 !== 1" (click)="removeGuest(stay, i)"></i>
+                  <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="i+1 !== 1" (click)="removeGuest(stay, i)"></i>
                 </div>
               </div>
 
@@ -69,76 +69,21 @@
       </div>
       <button class="btn btn-success" (click)="addStay()">Add new period</button>
 
-      <!-- Person information -->
-      <div *ngFor="let person of persons | slice:0:amountPersons; let i = index;" class="panel panel-success">
-        <div class="panel-heading">
-          <p>Person {{ i+1 }} - Id: {{ person.id }}</p>
-        </div>
-
-        <div class="panel-body">
-
-          <!-- Anonymous person -->
-          <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-            *ngIf="i !== 0">
-            <label>Anonymous</label>
-            <input type="checkbox" name="person{{i}}.anonymous" [(ngModel)]="person.anonymous" />
-          </div>
-
-          <!-- 
-            Camping card number
-            optional - only for 1. person
-           -->
-          <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-            *ngIf="i == 0">
-            <label for="campingCard">Camping card (optional)</label>
-            <input type="text" name="person{{i}}.campingCard" class="form-control" [(ngModel)]="persons[0].campingCard" #campingCard="ngModel"
-              placeholder="Camping card number" />
-          </div>
-
-          <!-- Passport number -->
-          <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-            <label>Passport number</label>
-            <div class="input-group">
-              <input type="text" class="form-control" name="person{{i}}.passport" [(ngModel)]="person.passport" #person.passport="ngModel"
-                placeholder="Passport number" [disabled]="person.anonymous" />
-              <div class="input-group-addon">
-                <i class="glyphicon glyphicon-search"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Firstname -->
-          <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
-            <label>First name</label>
-            <input type="text" name="person{{i}}.firstname" class="form-control" [(ngModel)]="person.firstname" #person.firstname="ngModel"
-              placeholder="Firstname" [disabled]="person.anonymous" />
-          </div>
-
-          <!-- Lastname -->
-          <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
-            <label>Last name</label>
-            <input type="text" name="person{{i}}.lastname" class="form-control" [(ngModel)]="person.lastname" #person.lastname placeholder="Lastname"
-              [disabled]="person.anonymous" />
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
 
-      <h3>Reservation period</h3>
-
       <!-- Start date -->
-      <!--<div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+      <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>Start date</label>
-        <my-date-picker name="startDate" [options]="myDatePickerOptions" [(ngModel)]="startDate"></my-date-picker>
-      </div>-->
+        <my-date-picker name="startDate" [options]="myDatePickerOptions" formControlName="reservationStartDate"></my-date-picker>
+      </div>
 
       <!-- End date -->
-      <!--<div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+      <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>End date</label>
-        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" [(ngModel)]="endDate"></my-date-picker>
-      </div>-->
+        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" formControlName="reservationEndDate"></my-date-picker>
+      </div>
 
       <!-- Available spots -->
       <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
