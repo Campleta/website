@@ -29,6 +29,15 @@ export class BookingService {
       });
   }
 
+  getReservation(id: Number) {
+    let options = new RequestOptions({headers: this.getHeaders()});
+
+    return this.authHttp.get(`api/reservations/${id}`, options)
+      .map((response: Response) => {
+        return response.json();
+      });
+  }
+
   getNotPlacedReservations() {
     let options = new RequestOptions({headers: this.getHeaders()});
 
