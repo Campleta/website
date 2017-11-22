@@ -3,9 +3,9 @@
   <app-alert></app-alert>
 
   <form [formGroup]="editReservationForm" (ngSubmit)="saveReservation()">
-    <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+    <div formArrayName="staysArray" class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
 
-      <div *ngFor="let stay of editReservationForm.controls.staysArray.controls; let in = index" formArrayName="staysArray" class="panel panel-success">
+      <div *ngFor="let stay of editReservationForm.controls.staysArray.controls; let in = index" class="panel panel-success">
 
         <div class="panel-heading" [formGroupName]="in">
           <div class="form-group">

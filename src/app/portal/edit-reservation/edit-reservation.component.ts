@@ -23,7 +23,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   private sub: any;
   availableSpots: Number = 0;
 
-  editReservationForm: FormGroup;
+  public editReservationForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
