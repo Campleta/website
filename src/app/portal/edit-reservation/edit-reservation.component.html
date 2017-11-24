@@ -9,7 +9,7 @@
       <div *ngFor="let stay of editReservationForm['controls'].staysArray['controls']; let in = index" class="panel panel-success">
 
         <div class="panel-heading" [formGroupName]="in">
-          <div class="form-group">
+          <div class="form-group clearfix">
             <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="in + 1 > 1" (click)="removeStay(in)"></i>
           </div>
 
