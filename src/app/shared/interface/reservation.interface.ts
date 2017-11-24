@@ -1,6 +1,6 @@
 export interface Reservation {
-    reservationstartDate: string;
-    reservationendDate: string;
+    reservationStartDate: string;
+    reservationEndDate: string;
     staysArray: Stay[];
 }
 
