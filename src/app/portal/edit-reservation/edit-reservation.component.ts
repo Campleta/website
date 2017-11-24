@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { BookingService } from './../../services/booking.service';
 import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 import { Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { Reservation, Guest } from './../../shared/interface/reservation.interface';
+import { AuthenticationService } from 'app/services/authentication.service';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -25,19 +27,24 @@ export class EditReservationComponent implements OnInit, OnDestroy {
 
   public editReservationForm: FormGroup;
 
+  data: any = {};
+
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute, 
-    private bookingService: BookingService) { }
+    private route: ActivatedRoute,
+    private bookingService: BookingService,
+    private authService: AuthenticationService) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.editReservationForm = this.formBuilder.group({
-        reservationStartDate: [null],
-        reservationEndDate: [null],
+        campingNumber: [null, Validators.required],
+        reservationStartDate: [null, Validators.required],
+        reservationEndDate: [null, Validators.required],
         staysArray: this.formBuilder.array([])
       });
+
       this.loadReservation(this.id);
     });
   }
@@ -47,16 +54,42 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   }
 
   initStay() {
+    let tmpStartDate = new Date();
+    let tmpEndDate = new Date();
+    tmpStartDate.setFullYear(this.editReservationForm.get("reservationStartDate").value.date.year);
+    tmpStartDate.setMonth(this.editReservationForm.get("reservationStartDate").value.date.month);
+    tmpStartDate.setDate(this.editReservationForm.get("reservationStartDate").value.date.day);
+    tmpEndDate.setFullYear(this.editReservationForm.get("reservationEndDate").value.date.year);
+    tmpEndDate.setMonth(this.editReservationForm.get("reservationEndDate").value.date.month);
+    tmpEndDate.setDate(this.editReservationForm.get("reservationEndDate").value.date.day);
+    
     return this.formBuilder.group({
-      startDate: [null],
-      endDate: [null],
+      campingNumber: [null, Validators.required],
+      startDate: [
+        {
+          date: {
+            year: tmpStartDate.getFullYear(),
+            month: tmpStartDate.getMonth(),
+            day: tmpStartDate.getDate()
+          }
+        }, Validators.required
+      ],
+      endDate: [
+        {
+          date: {
+            year: tmpEndDate.getFullYear(),
+            month: tmpEndDate.getMonth(),
+            day: tmpEndDate.getDate()
+          }
+        }, Validators.required
+      ],
       guestArray: this.formBuilder.array([
         this.initGuest(),
       ])
     });
   }
 
-  initStayWithData(data:any) {
+  initStayWithData(data: any) {
     let guestFormArr = [];
     data.guests.forEach(element => {
       guestFormArr.push(this.initGuestWithData(element));
@@ -66,16 +99,25 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     let tmpEndDate = new Date(data.endDate);
 
     return this.formBuilder.group({
-      startDate: [{date: {
-        year: tmpStartDate.getFullYear(),
-        month: tmpStartDate.getMonth()+1,
-        day: tmpStartDate.getDate()
-      }}],
-      endDate: [{date: {
-        year: tmpEndDate.getFullYear(),
-        month: tmpEndDate.getMonth()+1,
-        day: tmpEndDate.getDate()
-      }}],
+      campingNumber: [null, Validators.required],
+      startDate: [
+        {
+          date: {
+            year: tmpStartDate.getFullYear(),
+            month: tmpStartDate.getMonth() + 1,
+            day: tmpStartDate.getDate()
+          }
+        }, Validators.required
+      ],
+      endDate: [
+        {
+          date: {
+            year: tmpEndDate.getFullYear(),
+            month: tmpEndDate.getMonth() + 1,
+            day: tmpEndDate.getDate()
+          }
+        }, Validators.required
+      ],
       guestArray: this.formBuilder.array(
         guestFormArr
       )
@@ -84,19 +126,19 @@ export class EditReservationComponent implements OnInit, OnDestroy {
 
   initGuest() {
     return this.formBuilder.group({
-      anonymous: [''],
-      passport: [''],
-      firstname: [''],
-      lastname: ['']
+      anonymous: [false],
+      passport: [null, Validators.required],
+      firstname: [null, Validators.required],
+      lastname: [null, Validators.required]
     });
   }
 
-  initGuestWithData(data:any) {
+  initGuestWithData(data: any) {
     return this.formBuilder.group({
-      anonymous: [''],
-      passport: [data.passport],
-      firstname: [data.firstname],
-      lastname: [data.lastname]
+      anonymous: [false],
+      passport: [data.passport, Validators.required],
+      firstname: [data.firstname, Validators.required],
+      lastname: [data.lastname, Validators.required]
     });
   }
 
@@ -105,7 +147,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     control.push(this.initStay());
   }
 
-  addStayWithData(data:any) {
+  addStayWithData(data: any) {
     const control = <FormArray>this.editReservationForm.controls['staysArray'];
     control.push(this.initStayWithData(data));
   }
@@ -125,12 +167,72 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     control.removeAt(stayIndex);
   }
 
-  public saveReservation() {
+  public saveReservation(model: Reservation) {
+    this.prepareRequestReservation();
+  }
 
+  private prepareRequestReservation() {
+    let model: any = {};
+    model.id = this.id;
+    model.campsite = this.authService.campsite.id;
+    //model.areaType = 0;
+    let start = new Date();
+    start.setFullYear(this.editReservationForm.get("reservationStartDate").value.date.year);
+    start.setMonth(this.editReservationForm.get("reservationStartDate").value.date.month - 1);
+    start.setDate(this.editReservationForm.get("reservationStartDate").value.date.day);
+    start.setHours(12);
+    start.setMinutes(0);
+    start.setSeconds(0);
+    let end = new Date();
+    end.setFullYear(this.editReservationForm.get("reservationEndDate").value.date.year);
+    end.setMonth(this.editReservationForm.get("reservationEndDate").value.date.month - 1);
+    end.setDate(this.editReservationForm.get("reservationEndDate").value.date.day);
+    end.setHours(11);
+    end.setMinutes(59);
+    end.setSeconds(0);
+    model.startDate = start.toISOString();
+    model.endDate = end.toISOString();
+    model.stays = [];
+    this.editReservationForm.get("staysArray").value.forEach(element => {
+      let tmpStartDate = new Date();
+      let tmpEndDate = new Date();
+      tmpStartDate.setFullYear(element.startDate.date.year);
+      tmpStartDate.setMonth(element.startDate.date.month);
+      tmpStartDate.setDate(element.startDate.date.day);
+      tmpStartDate.setHours(12);
+      tmpStartDate.setMinutes(0);
+      tmpStartDate.setSeconds(0);
+
+      tmpEndDate.setFullYear(element.endDate.date.year);
+      tmpEndDate.setMonth(element.endDate.date.month);
+      tmpEndDate.setDate(element.endDate.date.day);
+      tmpEndDate.setHours(11);
+      tmpEndDate.setMinutes(59);
+      tmpEndDate.setSeconds(0);
+
+      model.stays.push({
+        "guests": element.guestArray.filter(guest => this.validateGuests(guest)),
+        "startDate": tmpStartDate.toISOString(),
+        "endDate": tmpEndDate.toISOString()
+      });
+    });
+
+    console.log(model);
+  }
+
+  private validateGuests(guest: Guest) {
+    if (guest.anonymous) {
+      return guest;
+    } else {
+      if (guest.passport) {
+        return guest;
+      }
+    }
   }
 
   private loadReservation(id: Number) {
     this.bookingService.getReservation(id).subscribe(response => {
+      this.data = response;
 
       // Set Reservation dates.
       let resStart = new Date(response.startDate);
@@ -153,17 +255,11 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       });
 
       // Add stays with guests.
+      let isFirst: Boolean = true;
       response.stays.forEach(element => {
         this.addStayWithData(element);
       });
     });
   }
 
-}
-export class Guest {
-  id: number;
-  passport: string;
-  firstname: string;
-  lastname: string;
-  anonymous: boolean;
 }

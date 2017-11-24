@@ -1,0 +1,13 @@
+<div [formGroup]="parentForm">
+  <div formArrayName="stays">
+    <app-form-stay *ngFor="let stay of stays; let i = index"
+      [formArray]="parentForm.controls.stays"
+      [stay]="stay"
+      (removed)="removeStay(i)">
+    </app-form-stay>
+  </div>
+
+  <div>
+    <button class="btn btn-success" (click)="addStay()">Add period</button>
+  </div>
+</div>
