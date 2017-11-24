@@ -27,8 +27,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
 
   public editReservationForm: FormGroup;
 
-  data: any = {};
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -39,9 +37,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.editReservationForm = this.formBuilder.group({
-        campingNumber: [null, Validators.required],
-        reservationStartDate: [null, Validators.required],
-        reservationEndDate: [null, Validators.required],
+        reservationStartDate: [null],
+        reservationEndDate: [null],
         staysArray: this.formBuilder.array([])
       });
 
@@ -64,7 +61,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     tmpEndDate.setDate(this.editReservationForm.get("reservationEndDate").value.date.day);
     
     return this.formBuilder.group({
-      campingNumber: [null, Validators.required],
       startDate: [
         {
           date: {
@@ -99,7 +95,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     let tmpEndDate = new Date(data.endDate);
 
     return this.formBuilder.group({
-      campingNumber: [null, Validators.required],
       startDate: [
         {
           date: {
@@ -232,8 +227,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
 
   private loadReservation(id: Number) {
     this.bookingService.getReservation(id).subscribe(response => {
-      this.data = response;
-
       // Set Reservation dates.
       let resStart = new Date(response.startDate);
       let resEnd = new Date(response.endDate);

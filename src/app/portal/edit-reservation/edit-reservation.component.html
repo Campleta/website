@@ -4,11 +4,11 @@
 
   <form [formGroup]="editReservationForm">
 
-    <div formArrayName="staysArray" class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+    <div formArrayName="staysArray" class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1 no-validation">
 
-      <div *ngFor="let stay of editReservationForm['controls'].staysArray['controls']; let in = index" class="panel panel-success">
+      <div [formGroupName]="in" *ngFor="let stay of editReservationForm['controls'].staysArray['controls']; let in = index" class="panel panel-success no-validation">
 
-        <div class="panel-heading" [formGroupName]="in">
+        <div class="panel-heading">
           <div class="form-group clearfix">
             <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="in + 1 > 1" (click)="removeStay(in)"></i>
           </div>
@@ -21,11 +21,11 @@
           </div>
         </div>
 
-        <div class="panel-body" [formGroupName]="in">
+        <div class="panel-body" formArrayName="guestArray">
 
-          <div *ngFor="let guest of stay['controls'].guestArray['controls']; let i = index" formArrayName="guestArray">
+          <div *ngFor="let guest of stay['controls'].guestArray['controls']; let i = index" [formGroupName]="i" class="no-validation">
 
-            <div class="row" [formGroupName]="i">
+            <div class="row">
 
               <!-- Anonymous person -->
               <div *ngIf="i + 1 > 1" class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
