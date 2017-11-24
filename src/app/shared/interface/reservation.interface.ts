@@ -1,5 +1,4 @@
 export interface Reservation {
-    campsiteId: Number;
     areaType: Number;
     startDate: string;
     endDate: string;
