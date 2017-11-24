@@ -1,5 +1,4 @@
 export interface Reservation {
-    areaType: Number;
     startDate: string;
     endDate: string;
     staysArray: Stay[];
