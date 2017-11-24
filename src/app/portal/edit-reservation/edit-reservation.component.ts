@@ -21,6 +21,25 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     markCurrentYear: true,
     openSelectorOnInputClick: true,
   };
+  subDatePickerOptions: IMyDpOptions = {
+    dateFormat: 'dd-mm-yyyy',
+    markCurrentDay: true,
+    markCurrentMonth: true,
+    markCurrentYear: true,
+    openSelectorOnInputClick: true,
+    minYear: 1900,
+    maxYear: 2600,
+    disableUntil: {
+      year: 0,
+      month: 0,
+      day: 0
+    },
+    disableSince: {
+      year: 0,
+      month: 0,
+      day: 0
+    }
+  }
   id: Number;
   private sub: any;
   availableSpots: Number = 0;
@@ -37,8 +56,20 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     this.sub = this.route.params.subscribe(params => {
       this.id = +params['id'];
       this.editReservationForm = this.formBuilder.group({
-        reservationStartDate: [null],
-        reservationEndDate: [null],
+        reservationStartDate: [{
+          date: {
+            year: 0,
+            month: 0,
+            day: 0
+          }
+        }],
+        reservationEndDate: [{
+          date: {
+            year: 0,
+            month: 0,
+            day: 0
+          }
+        }],
         staysArray: this.formBuilder.array([])
       });
 
@@ -50,7 +81,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     this.sub.unsubscribe();
   }
 
-  initStay() {
+  public initStay() {
     let tmpStartDate = new Date();
     let tmpEndDate = new Date();
     tmpStartDate.setFullYear(this.editReservationForm.get("reservationStartDate").value.date.year);
@@ -85,7 +116,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     });
   }
 
-  initStayWithData(data: any) {
+  public initStayWithData(data: any) {
     let guestFormArr = [];
     data.guests.forEach(element => {
       guestFormArr.push(this.initGuestWithData(element));
@@ -119,7 +150,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     })
   }
 
-  initGuest() {
+  public initGuest() {
     return this.formBuilder.group({
       anonymous: [false],
       passport: [null, Validators.required],
@@ -128,7 +159,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     });
   }
 
-  initGuestWithData(data: any) {
+  public initGuestWithData(data: any) {
     return this.formBuilder.group({
       anonymous: [false],
       passport: [data.passport, Validators.required],
@@ -137,12 +168,12 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     });
   }
 
-  addStay() {
+  public addStay() {
     const control = <FormArray>this.editReservationForm.controls['staysArray'];
     control.push(this.initStay());
   }
 
-  addStayWithData(data: any) {
+  public addStayWithData(data: any) {
     const control = <FormArray>this.editReservationForm.controls['staysArray'];
     control.push(this.initStayWithData(data));
   }
@@ -246,6 +277,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
           }
         }
       });
+      this.disableUntil({year: resStart.getFullYear(), month: resStart.getMonth() + 1, day: resStart.getDate()})
+      this.disableSince({year: resEnd.getFullYear(), month: resEnd.getMonth() + 1, day: resEnd.getDate()})
 
       // Add stays with guests.
       let isFirst: Boolean = true;
@@ -254,5 +287,42 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       });
     });
   }
+
+  public onStartDateChanged(event: IMyDateModel) {
+    this.disableUntil(event.date);
+  }
+
+  public onEndDateChanged(event: IMyDateModel) {
+    this.disableSince(event.date);
+  }
+
+  private disableUntil(startDate: any) {
+    let d: Date = new Date();
+    d.setFullYear(startDate.year);
+    d.setMonth(startDate.month);
+    d.setDate(startDate.day - 1);
+    let copy = this.getCopyOfOptions();
+    copy.disableUntil = {year: d.getFullYear(), 
+                         month: d.getMonth(), 
+                         day: d.getDate()};
+    this.subDatePickerOptions = copy;
+  }
+
+  private disableSince(endDate: any) {
+    let d: Date = new Date();
+    d.setFullYear(endDate.year);
+    d.setMonth(endDate.month);
+    d.setDate(endDate.day + 1);
+    let copy = this.getCopyOfOptions();
+    copy.disableSince = {year: d.getFullYear(), 
+                         month: d.getMonth(), 
+                         day: d.getDate()};
+    this.subDatePickerOptions = copy;
+  }
+
+  // Returns copy of myOptions
+  private getCopyOfOptions(): IMyDpOptions {
+    return JSON.parse(JSON.stringify(this.subDatePickerOptions));
+}
 
 }

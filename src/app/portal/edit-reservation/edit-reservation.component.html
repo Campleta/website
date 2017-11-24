@@ -15,9 +15,9 @@
 
           <div class="clearfix">
             <my-date-picker class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-              [disabled]="in + 1 == 1" [(options)]="myDatePickerOptions" formControlName="startDate"></my-date-picker>
+              [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="startDate"></my-date-picker>
             <my-date-picker class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-              [disabled]="in + 1 == 1" [(options)]="myDatePickerOptions" formControlName="endDate"></my-date-picker>
+              [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="endDate"></my-date-picker>
           </div>
         </div>
 
@@ -80,13 +80,13 @@
       <!-- Start date -->
       <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>Start date</label>
-        <my-date-picker name="startDate" [options]="myDatePickerOptions" formControlName="reservationStartDate"></my-date-picker>
+        <my-date-picker name="startDate" [options]="myDatePickerOptions" (dateChanged)="onStartDateChanged($event)" formControlName="reservationStartDate"></my-date-picker>
       </div>
 
       <!-- End date -->
       <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>End date</label>
-        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" formControlName="reservationEndDate"></my-date-picker>
+        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" (dateChanged)="onEndDateChanged($event)" formControlName="reservationEndDate"></my-date-picker>
       </div>
 
       <!-- Available spots -->
