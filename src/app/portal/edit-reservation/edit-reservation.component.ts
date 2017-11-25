@@ -153,9 +153,9 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   public initGuest() {
     return this.formBuilder.group({
       anonymous: [false],
-      passport: [null, Validators.required],
-      firstname: [null, Validators.required],
-      lastname: [null, Validators.required]
+      passport: [{value: null, disabled: false}, Validators.required],
+      firstname: [{value: null, disabled: false}, Validators.required],
+      lastname: [{value: null, disabled: false}, Validators.required]
     });
   }
 
@@ -166,6 +166,22 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       firstname: [data.firstname, Validators.required],
       lastname: [data.lastname, Validators.required]
     });
+  }
+
+  public anonymousChange(guest, value, index: number) {
+    const tmpPassport: FormControl = guest.controls['passport'];
+    const tmpFirstname: FormControl = guest.controls['firstname'];
+    const tmpLastname: FormControl = guest.controls['lastname'];
+
+    if(value.target.checked) {
+      tmpPassport.disable();
+      tmpFirstname.disable();
+      tmpLastname.disable();
+    } else {
+      tmpPassport.enable();
+      tmpFirstname.enable();
+      tmpLastname.enable();
+    }
   }
 
   public addStay() {

@@ -32,7 +32,7 @@
                 <div class="clearfix">
                   <div class="pull-left">
                     <label>Anonymous</label>
-                    <input type="checkbox" formControlName="anonymous" />
+                    <input type="checkbox" formControlName="anonymous" (change)="anonymousChange(guest, $event, i)" />
                   </div>
 
                   <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="i+1 !== 1" (click)="removeGuest(stay, i)"></i>
@@ -59,7 +59,7 @@
               <!-- Lastname -->
               <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
                 <label>Last name</label>
-                <input type="text" class="form-control" formControlName="lastname" />
+                <input type="text" class="form-control" formControlName="lastname" placeholder="Lastname" />
               </div>
 
             </div>
