@@ -17,7 +17,7 @@ export class FormArrayStayComponent implements OnInit {
     this.parentForm.addControl('stays', new FormArray([]));
   }
 
-  addStay(index: number) {
+  addStay() {
     this.stays.push({
       startDate: [{
         year: 0,

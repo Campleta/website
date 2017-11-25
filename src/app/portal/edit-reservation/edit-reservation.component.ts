@@ -193,7 +193,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     control.removeAt(stayIndex);
   }
 
-  public saveReservation(model: Reservation) {
+  public saveReservation() {
     this.prepareRequestReservation();
   }
 

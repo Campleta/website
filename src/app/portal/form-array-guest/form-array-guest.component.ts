@@ -17,7 +17,7 @@ export class FormArrayGuestComponent implements OnInit {
     this.parentForm.addControl('guests', new FormArray([]));
   }
 
-  addGuest(index: number) {
+  addGuest() {
     this.guests.push({
       passport: '',
       firstname: '',
