@@ -14,10 +14,21 @@
           </div>
 
           <div class="clearfix">
-            <my-date-picker class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-              [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="startDate"></my-date-picker>
-            <my-date-picker class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-              [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="endDate"></my-date-picker>
+            <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+              <my-date-picker [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="startDate"></my-date-picker>
+
+              <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.startDate.valid">
+                Start date is required.
+              </small>
+            </div>
+
+            <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+              <my-date-picker [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="endDate"></my-date-picker>
+
+              <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.endDate.valid">
+                End date is required.
+              </small>
+            </div>
           </div>
         </div>
 
@@ -48,18 +59,30 @@
                     <i class="glyphicon glyphicon-search"></i>
                   </div>
                 </div>
+
+                <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.passport.valid && !editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.anonymous.value">
+                  Passport is required.
+                </small>
               </div>
 
               <!-- Firstname -->
               <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
                 <label>First name</label>
                 <input type="text" class="form-control" formControlName="firstname" placeholder="Firstname" />
+
+                <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.firstname.valid && !editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.anonymous.value">
+                  Firstname is required.
+                </small>
               </div>
 
               <!-- Lastname -->
               <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
                 <label>Last name</label>
                 <input type="text" class="form-control" formControlName="lastname" placeholder="Lastname" />
+
+                <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.lastname.valid && !editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.anonymous.value">
+                  Lastname is required.
+                </small>
               </div>
 
             </div>
@@ -121,7 +144,7 @@
       </div>
 
       <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-        <button type="submit" class="btn btn-success" (click)="saveReservation()">Save reservation</button>
+        <button type="submit" class="btn btn-success" (click)="saveReservation()" [disabled]="!editReservationForm.valid">Save reservation</button>
       </div>
     </div>
   </form>

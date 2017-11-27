@@ -6,6 +6,8 @@ import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
 import { Validators, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { Reservation, Guest } from './../../shared/interface/reservation.interface';
 import { AuthenticationService } from 'app/services/authentication.service';
+import { ValidatorFn } from '@angular/forms/src/directives/validators';
+import { AbstractControl } from '@angular/forms/src/model';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -90,7 +92,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     tmpEndDate.setFullYear(this.editReservationForm.get("reservationEndDate").value.date.year);
     tmpEndDate.setMonth(this.editReservationForm.get("reservationEndDate").value.date.month);
     tmpEndDate.setDate(this.editReservationForm.get("reservationEndDate").value.date.day);
-    
+
     return this.formBuilder.group({
       startDate: [
         {
@@ -153,31 +155,34 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   public initGuest() {
     return this.formBuilder.group({
       anonymous: [false],
-      passport: [{value: null, disabled: false}, Validators.required],
-      firstname: [{value: null, disabled: false}, Validators.required],
-      lastname: [{value: null, disabled: false}, Validators.required]
+      passport: [{ value: null, disabled: false }, Validators.required],
+      firstname: [{ value: null, disabled: false }, Validators.required],
+      lastname: [{ value: null, disabled: false }, Validators.required]
     });
   }
 
   public initGuestWithData(data: any) {
     return this.formBuilder.group({
       anonymous: [false],
-      passport: [data.passport, Validators.required],
-      firstname: [data.firstname, Validators.required],
-      lastname: [data.lastname, Validators.required]
+      passport: [{ value: data.passport, disabled: false }, Validators.required],
+      firstname: [{ value: data.firstname, disabled: false }, Validators.required],
+      lastname: [{ value: data.lastname, disabled: false }, Validators.required]
     });
   }
 
   public anonymousChange(guest, value, index: number) {
+    const tmpAnonymous: FormControl = guest.controls['anonymous'];
     const tmpPassport: FormControl = guest.controls['passport'];
     const tmpFirstname: FormControl = guest.controls['firstname'];
     const tmpLastname: FormControl = guest.controls['lastname'];
 
-    if(value.target.checked) {
+    if (value.target.checked) {
+      tmpAnonymous.setValue(true);
       tmpPassport.disable();
       tmpFirstname.disable();
       tmpLastname.disable();
     } else {
+      tmpAnonymous.setValue(false);
       tmpPassport.enable();
       tmpFirstname.enable();
       tmpLastname.enable();
@@ -293,8 +298,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
           }
         }
       });
-      this.disableUntil({year: resStart.getFullYear(), month: resStart.getMonth() + 1, day: resStart.getDate()})
-      this.disableSince({year: resEnd.getFullYear(), month: resEnd.getMonth() + 1, day: resEnd.getDate()})
+      this.disableUntil({ year: resStart.getFullYear(), month: resStart.getMonth() + 1, day: resStart.getDate() })
+      this.disableSince({ year: resEnd.getFullYear(), month: resEnd.getMonth() + 1, day: resEnd.getDate() })
 
       // Add stays with guests.
       let isFirst: Boolean = true;
@@ -318,9 +323,11 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     d.setMonth(startDate.month);
     d.setDate(startDate.day - 1);
     let copy = this.getCopyOfOptions();
-    copy.disableUntil = {year: d.getFullYear(), 
-                         month: d.getMonth(), 
-                         day: d.getDate()};
+    copy.disableUntil = {
+      year: d.getFullYear(),
+      month: d.getMonth(),
+      day: d.getDate()
+    };
     this.subDatePickerOptions = copy;
   }
 
@@ -330,15 +337,17 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     d.setMonth(endDate.month);
     d.setDate(endDate.day + 1);
     let copy = this.getCopyOfOptions();
-    copy.disableSince = {year: d.getFullYear(), 
-                         month: d.getMonth(), 
-                         day: d.getDate()};
+    copy.disableSince = {
+      year: d.getFullYear(),
+      month: d.getMonth(),
+      day: d.getDate()
+    };
     this.subDatePickerOptions = copy;
   }
 
   // Returns copy of myOptions
   private getCopyOfOptions(): IMyDpOptions {
     return JSON.parse(JSON.stringify(this.subDatePickerOptions));
-}
+  }
 
 }
