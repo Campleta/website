@@ -162,11 +162,14 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   }
 
   public initGuestWithData(data: any) {
+    let isAnonymous: boolean = false;
+    console.log(data);
+    if(!data.hasOwnProperty('passport')) isAnonymous = true;
     return this.formBuilder.group({
-      anonymous: [false],
-      passport: [{ value: data.passport, disabled: false }, Validators.required],
-      firstname: [{ value: data.firstname, disabled: false }, Validators.required],
-      lastname: [{ value: data.lastname, disabled: false }, Validators.required]
+      anonymous: [isAnonymous],
+      passport: [{ value: data.passport, disabled: isAnonymous }, Validators.required],
+      firstname: [{ value: data.firstname, disabled: isAnonymous }, Validators.required],
+      lastname: [{ value: data.lastname, disabled: isAnonymous }, Validators.required]
     });
   }
 
@@ -215,7 +218,10 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   }
 
   public saveReservation() {
-    this.prepareRequestReservation();
+    let model = this.prepareRequestReservation();
+    this.bookingService.editReservation(model, this.id).subscribe(response => {
+      console.log(response);
+    });
   }
 
   private prepareRequestReservation() {
@@ -244,14 +250,14 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       let tmpStartDate = new Date();
       let tmpEndDate = new Date();
       tmpStartDate.setFullYear(element.startDate.date.year);
-      tmpStartDate.setMonth(element.startDate.date.month);
+      tmpStartDate.setMonth(element.startDate.date.month - 1);
       tmpStartDate.setDate(element.startDate.date.day);
       tmpStartDate.setHours(12);
       tmpStartDate.setMinutes(0);
       tmpStartDate.setSeconds(0);
 
       tmpEndDate.setFullYear(element.endDate.date.year);
-      tmpEndDate.setMonth(element.endDate.date.month);
+      tmpEndDate.setMonth(element.endDate.date.month - 1);
       tmpEndDate.setDate(element.endDate.date.day);
       tmpEndDate.setHours(11);
       tmpEndDate.setMinutes(59);
@@ -264,7 +270,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       });
     });
 
-    console.log(model);
+    return model;
   }
 
   private validateGuests(guest: Guest) {
