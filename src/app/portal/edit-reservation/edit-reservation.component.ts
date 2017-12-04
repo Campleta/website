@@ -8,6 +8,8 @@ import { Reservation, Guest } from './../../shared/interface/reservation.interfa
 import { AuthenticationService } from 'app/services/authentication.service';
 import { ValidatorFn } from '@angular/forms/src/directives/validators';
 import { AbstractControl } from '@angular/forms/src/model';
+import { SpinnerService } from 'app/services/spinner.service';
+import { AlertService } from 'app/services/alert.service';
 
 @Component({
   selector: 'app-edit-reservation',
@@ -54,7 +56,9 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private bookingService: BookingService,
-    private authService: AuthenticationService) { }
+    private authService: AuthenticationService,
+    private spinnerService: SpinnerService,
+    private alertService: AlertService) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -225,9 +229,16 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   }
 
   public saveReservation() {
+    this.spinnerService.show("edit-reservation-spinner");
     let model = this.prepareRequestReservation();
-    this.bookingService.editReservation(model, this.id).subscribe(response => {
+    this.bookingService.editReservation(model, this.id)
+    .subscribe(response => {
+      this.spinnerService.hide("edit-reservation-spinner");
+      this.alertService.success("Reservation has been updated.");
       console.log(response);
+    }, error => {
+      this.spinnerService.hide("edit-reservation-spinner");
+      this.alertService.error("Something went wrong.");
     });
   }
 
@@ -319,8 +330,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       response.stays.forEach(element => {
         this.addStayWithData(element);
       });
-
-      console.log(this.subDatePickerOptions);
     });
   }
 
@@ -331,11 +340,9 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   }
 
   public onEndDateChanged(event: IMyDateModel) {
-    console.log(event);
     this.reservationEndDate = { date: { year: event.date.year, month: event.date.month, day: event.date.day }};
     let tmp: any = { date: { year: event.date.year, month: event.date.month - 1, day: event.date.day }};
     this.disableSince(tmp.date);
-    console.log(this.subDatePickerOptions);
   }
 
   private disableUntil(startDate: any) {
