@@ -16,6 +16,8 @@ import { AbstractControl } from '@angular/forms/src/model';
 })
 export class EditReservationComponent implements OnInit, OnDestroy {
 
+  reservationStartDate: any = { date: { year: 1900, month: 1, day: 1 }};
+  reservationEndDate: any = { date: { year: 1900, month: 12, day: 31 }};
   myDatePickerOptions: IMyDpOptions = {
     dateFormat: 'dd-mm-yyyy',
     markCurrentDay: true,
@@ -32,14 +34,14 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     minYear: 1900,
     maxYear: 2600,
     disableUntil: {
-      year: 0,
-      month: 0,
-      day: 0
+      year: this.reservationStartDate.date.year,
+      month: this.reservationStartDate.date.month,
+      day: this.reservationStartDate.date.day
     },
     disableSince: {
-      year: 0,
-      month: 0,
-      day: 0
+      year: this.reservationEndDate.date.year,
+      month: this.reservationEndDate.date.month,
+      day: this.reservationEndDate.date.day
     }
   }
   id: Number;
@@ -87,18 +89,24 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     let tmpStartDate = new Date();
     let tmpEndDate = new Date();
     tmpStartDate.setFullYear(this.editReservationForm.get("reservationStartDate").value.date.year);
-    tmpStartDate.setMonth(this.editReservationForm.get("reservationStartDate").value.date.month);
+    tmpStartDate.setMonth(this.editReservationForm.get("reservationStartDate").value.date.month - 1);
     tmpStartDate.setDate(this.editReservationForm.get("reservationStartDate").value.date.day);
+    tmpStartDate.setHours(12);
+    tmpStartDate.setMinutes(0);
+    tmpStartDate.setSeconds(0);
     tmpEndDate.setFullYear(this.editReservationForm.get("reservationEndDate").value.date.year);
-    tmpEndDate.setMonth(this.editReservationForm.get("reservationEndDate").value.date.month);
+    tmpEndDate.setMonth(this.editReservationForm.get("reservationEndDate").value.date.month - 1);
     tmpEndDate.setDate(this.editReservationForm.get("reservationEndDate").value.date.day);
+    tmpEndDate.setHours(11);
+    tmpEndDate.setMinutes(59);
+    tmpEndDate.setSeconds(0);
 
     return this.formBuilder.group({
       startDate: [
         {
           date: {
             year: tmpStartDate.getFullYear(),
-            month: tmpStartDate.getMonth(),
+            month: tmpStartDate.getMonth() + 1,
             day: tmpStartDate.getDate()
           }
         }, Validators.required
@@ -107,7 +115,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
         {
           date: {
             year: tmpEndDate.getFullYear(),
-            month: tmpEndDate.getMonth(),
+            month: tmpEndDate.getMonth() + 1,
             day: tmpEndDate.getDate()
           }
         }, Validators.required
@@ -163,7 +171,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
 
   public initGuestWithData(data: any) {
     let isAnonymous: boolean = false;
-    console.log(data);
     if(!data.hasOwnProperty('passport')) isAnonymous = true;
     return this.formBuilder.group({
       anonymous: [isAnonymous],
@@ -304,23 +311,31 @@ export class EditReservationComponent implements OnInit, OnDestroy {
           }
         }
       });
-      this.disableUntil({ year: resStart.getFullYear(), month: resStart.getMonth() + 1, day: resStart.getDate() })
-      this.disableSince({ year: resEnd.getFullYear(), month: resEnd.getMonth() + 1, day: resEnd.getDate() })
+      this.disableUntil({ year: resStart.getFullYear(), month: resStart.getMonth(), day: resStart.getDate() })
+      this.disableSince({ year: resEnd.getFullYear(), month: resEnd.getMonth(), day: resEnd.getDate() })
 
       // Add stays with guests.
       let isFirst: Boolean = true;
       response.stays.forEach(element => {
         this.addStayWithData(element);
       });
+
+      console.log(this.subDatePickerOptions);
     });
   }
 
   public onStartDateChanged(event: IMyDateModel) {
-    this.disableUntil(event.date);
+    this.reservationStartDate = { date: { year: event.date.year, month: event.date.month, day: event.date.day } };
+    let tmp: any = { date: { year: event.date.year, month: event.date.month - 1, day: event.date.day }};
+    this.disableUntil(tmp.date);
   }
 
   public onEndDateChanged(event: IMyDateModel) {
-    this.disableSince(event.date);
+    console.log(event);
+    this.reservationEndDate = { date: { year: event.date.year, month: event.date.month, day: event.date.day }};
+    let tmp: any = { date: { year: event.date.year, month: event.date.month - 1, day: event.date.day }};
+    this.disableSince(tmp.date);
+    console.log(this.subDatePickerOptions);
   }
 
   private disableUntil(startDate: any) {
@@ -331,7 +346,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     let copy = this.getCopyOfOptions();
     copy.disableUntil = {
       year: d.getFullYear(),
-      month: d.getMonth(),
+      month: d.getMonth() + 1,
       day: d.getDate()
     };
     this.subDatePickerOptions = copy;
@@ -345,7 +360,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     let copy = this.getCopyOfOptions();
     copy.disableSince = {
       year: d.getFullYear(),
-      month: d.getMonth(),
+      month: d.getMonth() + 1,
       day: d.getDate()
     };
     this.subDatePickerOptions = copy;
