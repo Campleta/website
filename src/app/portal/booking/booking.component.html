@@ -38,10 +38,13 @@
       </div>
     </div>
 
+    <!-- Map -->
     <div class="jumbotron">
       <div [inlineSVG]="'../assets/images/Countries_Europe.svg'" id="map" #map (onSVGInserted)="setMapData($event)" 
-        droppable (onDrop)="onReservationDrop($event)" (mouseover)="setHoverElem($event)" 
-        (mouseout)="removeHoverElem($event)" (click)="displayAreaInfo($event)" style="width:100%;"></div>
+        droppable (onDrop)="onReservationDrop($event)" (onDragOver)="setHoverElem($event)" (onDragLeave)="removeHoverElem($event)"
+        (mouseover)="setHoverElem($event)" (mouseout)="removeHoverElem($event)" 
+        (click)="displayAreaInfo($event)" style="width:100%;"></div>
     </div>
+
   </div>
 </div>
