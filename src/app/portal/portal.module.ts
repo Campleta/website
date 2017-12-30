@@ -7,7 +7,7 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { MyDatePickerModule } from 'mydatepicker';
 import { SharedModule } from './../shared/shared.module';
 import { DirectivesModule } from './../directives/directives.module';
-import { Ng2DragDropModule } from 'ng2-drag-drop';
+import { NgDragDropModule } from 'ng-drag-drop';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 
@@ -31,7 +31,7 @@ import { FormGuestComponent } from './form-guest/form-guest.component';
     InlineSVGModule,
     SharedModule,
     DirectivesModule,
-    Ng2DragDropModule.forRoot(),
+    NgDragDropModule.forRoot(),
     MyDatePickerModule,
     DropdownModule,
     PortalRoutingModule
