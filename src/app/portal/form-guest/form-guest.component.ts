@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, ChangeDetectorRef, EventEmitter } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, FormControl } from '@angular/forms';
 import { Guest } from 'app/shared/interface/reservation.interface';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
 const resolvedPromise = Promise.resolve(undefined);
 
@@ -9,12 +11,13 @@ const resolvedPromise = Promise.resolve(undefined);
   templateUrl: './form-guest.component.html',
   styleUrls: ['./form-guest.component.css']
 })
-export class FormGuestComponent implements OnInit {
-  @Input() formArray: FormArray;
-  @Input() guest: Guest;
+export class FormGuestComponent implements OnInit, OnDestroy {
+  @Input('group') formGroup: FormGroup;
+  @Input() guest;
+  @Input() public i: Number;
+  @Input() stay;
 
-  guestGroup: FormGroup;
-  index: number;
+  private behavior = new BehaviorSubject<Guest>(this.guest);
 
   @Output() removed = new EventEmitter();
 
@@ -23,20 +26,48 @@ export class FormGuestComponent implements OnInit {
     private cdRef: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.guestGroup = this.toFormGroup(this.guest);
-
-    resolvedPromise.then(() => {
-      this.index = this.formArray.length;
-      this.formArray.push(this.guestGroup);
+    this.guest = {};
+    this.behavior.subscribe(x => {
+      this.guest = this.behavior.getValue();
     });
   }
 
-  toFormGroup(guest: Guest) {
-    return this.formBuilder.group({
-      passport: [null],
-      firstname: [null],
-      lastname: [null]
-    });
+  ngOnDestroy() {
+    this.behavior.unsubscribe();
+  }
+
+  @Input()
+  set setGuest(value) {
+    this.behavior.next(value);
+  }
+
+  get getGuest() {
+    return this.behavior.getValue();
+  }
+
+  public anonymousChange(guest, value, index: number) {
+    console.log(guest);
+    const tmpAnonymous: FormControl = guest.controls['anonymous'];
+    const tmpPassport: FormControl = guest.controls['passport'];
+    const tmpFirstname: FormControl = guest.controls['firstname'];
+    const tmpLastname: FormControl = guest.controls['lastname'];
+
+    if (value.target.checked) {
+      tmpAnonymous.setValue(true);
+      tmpPassport.disable();
+      tmpFirstname.disable();
+      tmpLastname.disable();
+    } else {
+      tmpAnonymous.setValue(false);
+      tmpPassport.enable();
+      tmpFirstname.enable();
+      tmpLastname.enable();
+    }
+  }
+
+  public removeGuest(stay, guestIndex) {
+    const control = <FormArray>stay.controls['guestArray'];
+    control.removeAt(guestIndex);
   }
 
 }

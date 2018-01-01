@@ -213,16 +213,6 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     control.push(this.initStayWithData(data));
   }
 
-  public addGuest(stay) {
-    const control = <FormArray>stay.controls['guestArray'];
-    control.push(this.initGuest());
-  }
-
-  public removeGuest(stay, guestIndex) {
-    const control = <FormArray>stay.controls['guestArray'];
-    control.removeAt(guestIndex);
-  }
-
   public removeStay(stayIndex: number) {
     const control = <FormArray>this.editReservationForm.controls['staysArray'];
     control.removeAt(stayIndex);
@@ -231,7 +221,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   public saveReservation() {
     this.spinnerService.show("edit-reservation-spinner");
     let model = this.prepareRequestReservation();
-    this.bookingService.editReservation(model, this.id)
+    console.log("Done", model);
+    /*this.bookingService.editReservation(model, this.id)
     .subscribe(response => {
       this.spinnerService.hide("edit-reservation-spinner");
       this.alertService.success("Reservation has been updated.");
@@ -239,7 +230,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     }, error => {
       this.spinnerService.hide("edit-reservation-spinner");
       this.alertService.error("Something went wrong.");
-    });
+    });*/
   }
 
   private prepareRequestReservation() {

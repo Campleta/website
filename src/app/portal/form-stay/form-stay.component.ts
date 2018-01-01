@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, Output, ChangeDetectorRef, EventEmitter } from '@angular/core';
-import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Stay } from './../../models/stay.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { IMyDpOptions, IMyDate, IMyDateModel } from 'mydatepicker';
+import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
 
 const resolvedPromise = Promise.resolve(undefined);
 
@@ -9,50 +12,73 @@ const resolvedPromise = Promise.resolve(undefined);
   templateUrl: './form-stay.component.html',
   styleUrls: ['./form-stay.component.css']
 })
-export class FormStayComponent implements OnInit {
-  @Input() formArray: FormArray;
-  @Input() stay: Stay;
+export class FormStayComponent implements OnInit, OnDestroy {
 
-  stayGroup: FormGroup;
-  index: number;
+  @Input('group') stayForm: FormGroup;
+  @Input() stay;
+  private behavior = new BehaviorSubject<IMyDpOptions>({});
+  @Input() in;
+  @Input() staysArray;
 
-  @Output() removed = new EventEmitter();
-
-  constructor(
-    private formBuilder: FormBuilder, 
-    private cdRef: ChangeDetectorRef) { }
-
-  ngOnInit() {
-    this.stayGroup = this.toFormGroup(this.stay);
-
-    resolvedPromise.then(() => {
-      this.index = this.formArray.length;
-      this.formArray.push(this.stayGroup);
-    })
+  subDatePickerOptions: IMyDpOptions = {
+    dateFormat: 'dd-mm-yyyy',
+    markCurrentDay: true,
+    markCurrentMonth: true,
+    markCurrentYear: true,
+    openSelectorOnInputClick: true,
+    minYear: 1900,
+    maxYear: 2600,
+    disableUntil: {
+      year: 0,
+      month: 0,
+      day: 0
+    },
+    disableSince: {
+      year: 0,
+      month: 0,
+      day: 0
+    }
   }
 
-  toFormGroup(stay: Stay) {
-    return this.formBuilder.group({
-      campingNumber: [null, Validators.required],
-      startDate: [
-        {
-          date: {
-            year: 0,
-            month: 0,
-            day: 0
-          }
-        }, Validators.required
-      ],
-      endDate: [
-        {
-          date: {
-            year: 0,
-            month: 0,
-            day: 0
-          }
-        }, Validators.required
-      ]
+
+  @Input()
+  set setSubDateOptions(value) {
+    this.behavior.next(value);
+  }
+
+  get getSubDateOptions() {
+    return this.behavior.getValue();
+  }
+
+  constructor(private formBuilder: FormBuilder) { }
+
+  ngOnInit() {
+    this.behavior.subscribe(x => {
+      this.subDatePickerOptions = this.behavior.getValue();
     });
   }
 
+  ngOnDestroy() {
+    this.behavior.unsubscribe();
+  }
+
+  public removeStay(stayIndex: number) {
+    console.log(this.stayForm);
+    const control = <FormArray>this.staysArray;
+    control.removeAt(stayIndex);
+  }
+
+  public addGuest(stay) {
+    const control = <FormArray>stay.controls['guestArray'];
+    control.push(this.initGuest());
+  }
+
+  public initGuest() {
+    return this.formBuilder.group({
+      anonymous: [false],
+      passport: [{ value: null, disabled: false }, Validators.required],
+      firstname: [{ value: null, disabled: false }, Validators.required],
+      lastname: [{ value: null, disabled: false }, Validators.required]
+    });
+  }
 }

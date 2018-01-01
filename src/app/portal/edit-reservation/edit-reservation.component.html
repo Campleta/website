@@ -5,94 +5,11 @@
   <form [formGroup]="editReservationForm">
 
     <div formArrayName="staysArray" class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1 no-validation">
-
       <div [formGroupName]="in" *ngFor="let stay of editReservationForm['controls'].staysArray['controls']; let in = index" class="panel panel-success no-validation">
 
-        <div class="panel-heading">
-          <div class="form-group clearfix">
-            <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="in + 1 > 1" (click)="removeStay(in)"></i>
-          </div>
+        <app-form-stay [group]="editReservationForm['controls'].staysArray.controls[in]" 
+        [stay]="stay" [in]="in" [staysArray]="editReservationForm['controls'].staysArray" [setSubDateOptions]="subDatePickerOptions"></app-form-stay>
 
-          <div class="clearfix">
-            <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-              <my-date-picker [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="startDate"></my-date-picker>
-
-              <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.startDate.valid">
-                Start date is required.
-              </small>
-            </div>
-
-            <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-              <my-date-picker [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="endDate"></my-date-picker>
-
-              <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.endDate.valid">
-                End date is required.
-              </small>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel-body" formArrayName="guestArray">
-
-          <div *ngFor="let guest of stay['controls'].guestArray['controls']; let i = index" [formGroupName]="i" class="no-validation">
-
-            <div class="row">
-
-              <!-- Anonymous person -->
-              <div *ngIf="i + 1 > 1" class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-                <div class="clearfix">
-                  <div class="pull-left">
-                    <label>Anonymous</label>
-                    <input type="checkbox" formControlName="anonymous" (change)="anonymousChange(guest, $event, i)" />
-                  </div>
-
-                  <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="i+1 !== 1" (click)="removeGuest(stay, i)"></i>
-                </div>
-              </div>
-
-              <!-- Passport number -->
-              <div class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-                <label>Passport number</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" formControlName="passport" placeholder="Passport number" />
-                  <div class="input-group-addon">
-                    <i class="glyphicon glyphicon-search"></i>
-                  </div>
-                </div>
-
-                <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.passport.valid && !editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.anonymous.value">
-                  Passport is required.
-                </small>
-              </div>
-
-              <!-- Firstname -->
-              <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
-                <label>First name</label>
-                <input type="text" class="form-control" formControlName="firstname" placeholder="Firstname" />
-
-                <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.firstname.valid && !editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.anonymous.value">
-                  Firstname is required.
-                </small>
-              </div>
-
-              <!-- Lastname -->
-              <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-0">
-                <label>Last name</label>
-                <input type="text" class="form-control" formControlName="lastname" placeholder="Lastname" />
-
-                <small *ngIf="!editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.lastname.valid && !editReservationForm.controls.staysArray.controls[in].controls.guestArray.controls[i].controls.anonymous.value">
-                  Lastname is required.
-                </small>
-              </div>
-
-            </div>
-
-            <div class="divider" *ngIf="stay.controls.guestArray.length > i+1"></div>
-
-          </div>
-
-          <button class="btn btn-success" (click)="addGuest(stay)">Add new guest</button>
-        </div>
       </div>
       <button class="btn btn-success" (click)="addStay()">Add new period</button>
 
@@ -103,15 +20,15 @@
       <!-- Start date -->
       <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>Start date</label>
-        <my-date-picker name="startDate" [options]="myDatePickerOptions" (dateChanged)="onStartDateChanged($event)" 
-          formControlName="reservationStartDate" [(ngModel)]="reservationStartDate"></my-date-picker>
+        <my-date-picker name="startDate" [options]="myDatePickerOptions" (dateChanged)="onStartDateChanged($event)" formControlName="reservationStartDate"
+          [(ngModel)]="reservationStartDate"></my-date-picker>
       </div>
 
       <!-- End date -->
       <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
         <label>End date</label>
-        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" (dateChanged)="onEndDateChanged($event)" 
-          formControlName="reservationEndDate" [(ngModel)]="reservationEndDate"></my-date-picker>
+        <my-date-picker name="endDate" [(options)]="myDatePickerOptions" (dateChanged)="onEndDateChanged($event)" formControlName="reservationEndDate"
+          [(ngModel)]="reservationEndDate"></my-date-picker>
       </div>
 
       <!-- Available spots -->
