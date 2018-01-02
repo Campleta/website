@@ -14,7 +14,7 @@ const resolvedPromise = Promise.resolve(undefined);
 export class FormGuestComponent implements OnInit, OnDestroy {
   @Input('group') formGroup: FormGroup;
   @Input() guest;
-  @Input() public i: Number;
+  @Input() i;
   @Input() stay;
 
   private behavior = new BehaviorSubject<Guest>(this.guest);
