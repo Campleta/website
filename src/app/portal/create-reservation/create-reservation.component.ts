@@ -60,8 +60,12 @@ export class CreateReservationComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       let date = new Date();
       this.id = +params['id'];
+
       this.reservationStartDate = { date: { year: date.getFullYear(), month: date.getMonth()+1, day: date.getDate()}};
       this.reservationEndDate = { date: { year: date.getFullYear(), month: date.getMonth()+1, day: date.getDate()+1}};
+      this.disableUntil({ year: date.getFullYear(), month: date.getMonth(), day: date.getDate() })
+      this.disableSince({ year: date.getFullYear(), month: date.getMonth(), day: date.getDate()+1 })
+
       this.createReservationForm = this.formBuilder.group({
         reservationStartDate: [{
           date: {
