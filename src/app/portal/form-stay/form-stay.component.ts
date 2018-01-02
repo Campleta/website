@@ -63,7 +63,6 @@ export class FormStayComponent implements OnInit, OnDestroy {
   }
 
   public removeStay(stayIndex: number) {
-    console.log(this.stayForm);
     const control = <FormArray>this.staysArray;
     control.removeAt(stayIndex);
   }

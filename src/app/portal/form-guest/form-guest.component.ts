@@ -46,7 +46,6 @@ export class FormGuestComponent implements OnInit, OnDestroy {
   }
 
   public anonymousChange(guest, value, index: number) {
-    console.log(guest);
     const tmpAnonymous: FormControl = guest.controls['anonymous'];
     const tmpPassport: FormControl = guest.controls['passport'];
     const tmpFirstname: FormControl = guest.controls['firstname'];
