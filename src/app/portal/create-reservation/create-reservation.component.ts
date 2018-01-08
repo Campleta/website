@@ -44,6 +44,7 @@ export class CreateReservationComponent implements OnInit {
   }
   id: Number;
   private sub: any;
+  areaTypes = [{id:1, name: "test"}];
   availableSpots: Number = 0;
 
   public createReservationForm: FormGroup;
@@ -81,11 +82,16 @@ export class CreateReservationComponent implements OnInit {
             day: date.getDate()+1
           }
         }],
-        staysArray: this.formBuilder.array([])
+        staysArray: this.formBuilder.array([]),
+        areaType: this.initAreaType()
       });
 
       const control = <FormArray>this.createReservationForm.controls['staysArray'];
       control.push(this.initStay());
+
+      this.bookingService.getAreaTypesForCampsite().subscribe(res => {
+        this.areaTypes = res;
+      });
     });
   }
 
@@ -143,6 +149,12 @@ export class CreateReservationComponent implements OnInit {
     });
   }
 
+  public initAreaType() {
+    return this.formBuilder.control({
+      type: [{ value: {id:1, name: "hej"}}, Validators.required]
+    });
+  }
+
   public anonymousChange(guest, value, index: number) {
     const tmpAnonymous: FormControl = guest.controls['anonymous'];
     const tmpPassport: FormControl = guest.controls['passport'];
@@ -175,11 +187,9 @@ export class CreateReservationComponent implements OnInit {
   public saveReservation() {
     this.spinnerService.show("edit-reservation-spinner");
     let model = this.prepareRequestReservation();
-    console.log("Done", model);
 
     this.bookingService.createReservation(model)
       .subscribe(data => {
-        console.log(data);
         this.spinnerService.hide("create-reservation-spinner");
         this.alertService.success("Success");
         //this.router.navigate(["/portal/booking"]);
@@ -203,7 +213,7 @@ export class CreateReservationComponent implements OnInit {
     let model: any = {};
     model.id = this.id;
     model.campsite = this.authService.campsite.id;
-    //model.areaType = 0;
+    model.areaType = this.createReservationForm.get('areaType').value;
     let start = new Date();
     start.setFullYear(this.createReservationForm.get("reservationStartDate").value.date.year);
     start.setMonth(this.createReservationForm.get("reservationStartDate").value.date.month - 1);
@@ -244,7 +254,7 @@ export class CreateReservationComponent implements OnInit {
         "endDate": tmpEndDate.toISOString()
       });
     });
-
+    
     return model;
   }
 
