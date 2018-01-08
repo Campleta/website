@@ -151,7 +151,7 @@ export class CreateReservationComponent implements OnInit {
 
   public initAreaType() {
     return this.formBuilder.control({
-      type: [{ value: {id:1, name: "hej"}}, Validators.required]
+      type: [, Validators.required]
     });
   }
 
@@ -197,16 +197,6 @@ export class CreateReservationComponent implements OnInit {
         this.spinnerService.hide("create-reservation-spinner");
         this.alertService.error("Something went wrong, creating the reservation.");
       });
-
-    /*this.bookingService.editReservation(model, this.id)
-    .subscribe(response => {
-      this.spinnerService.hide("edit-reservation-spinner");
-      this.alertService.success("Reservation has been updated.");
-      console.log(response);
-    }, error => {
-      this.spinnerService.hide("edit-reservation-spinner");
-      this.alertService.error("Something went wrong.");
-    });*/
   }
 
   private prepareRequestReservation() {

@@ -49,6 +49,8 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   id: Number;
   private sub: any;
   availableSpots: Number = 0;
+  areaTypes: any = [];
+  areaTypeId: Number = 0;
 
   public editReservationForm: FormGroup;
 
@@ -78,7 +80,16 @@ export class EditReservationComponent implements OnInit, OnDestroy {
             day: 0
           }
         }],
-        staysArray: this.formBuilder.array([])
+        staysArray: this.formBuilder.array([]),
+        areaType: this.initAreaType()
+      });
+
+      this.editReservationForm.controls['areaType'].valueChanges.subscribe(type => {
+        this.areaTypeId = type;
+      })
+
+      this.bookingService.getAreaTypesForCampsite().subscribe(res => {
+        this.areaTypes = res;
       });
 
       this.loadReservation(this.id);
@@ -184,6 +195,12 @@ export class EditReservationComponent implements OnInit, OnDestroy {
     });
   }
 
+  public initAreaType() {
+    return this.formBuilder.control({
+      type: [, Validators.required]
+    });
+  }
+
   public anonymousChange(guest, value, index: number) {
     const tmpAnonymous: FormControl = guest.controls['anonymous'];
     const tmpPassport: FormControl = guest.controls['passport'];
@@ -221,16 +238,15 @@ export class EditReservationComponent implements OnInit, OnDestroy {
   public saveReservation() {
     this.spinnerService.show("edit-reservation-spinner");
     let model = this.prepareRequestReservation();
-    console.log("Done", model);
-    /*this.bookingService.editReservation(model, this.id)
+
+    this.bookingService.editReservation(model, this.id)
     .subscribe(response => {
       this.spinnerService.hide("edit-reservation-spinner");
       this.alertService.success("Reservation has been updated.");
-      console.log(response);
     }, error => {
       this.spinnerService.hide("edit-reservation-spinner");
       this.alertService.error("Something went wrong.");
-    });*/
+    });
   }
 
   private prepareRequestReservation() {
@@ -315,6 +331,7 @@ export class EditReservationComponent implements OnInit, OnDestroy {
       });
       this.disableUntil({ year: resStart.getFullYear(), month: resStart.getMonth(), day: resStart.getDate() })
       this.disableSince({ year: resEnd.getFullYear(), month: resEnd.getMonth(), day: resEnd.getDate() })
+      this.editReservationForm.controls['areaType'].setValue(response.areaType.id);
 
       // Add stays with guests.
       let isFirst: Boolean = true;
