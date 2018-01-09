@@ -19,8 +19,6 @@ import { CreateReservationComponent } from './create-reservation/create-reservat
 import { ChooseCampsiteComponent } from './choose-campsite/choose-campsite.component';
 import { EditReservationComponent } from './edit-reservation/edit-reservation.component';
 import { FormStayComponent } from './form-stay/form-stay.component';
-import { FormArrayStayComponent } from './form-array-stay/form-array-stay.component';
-import { FormArrayGuestComponent } from './form-array-guest/form-array-guest.component';
 import { FormGuestComponent } from './form-guest/form-guest.component';
 
 @NgModule({
@@ -45,9 +43,7 @@ import { FormGuestComponent } from './form-guest/form-guest.component';
     ChooseCampsiteComponent,
     EditReservationComponent,
     FormStayComponent,
-    FormGuestComponent,
-    FormArrayStayComponent,
-    FormArrayGuestComponent
+    FormGuestComponent
   ]
 })
 export class PortalModule { }

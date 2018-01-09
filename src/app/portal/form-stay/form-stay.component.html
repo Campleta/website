@@ -1,41 +1,36 @@
-<div class="panel panel-success">
+<div [formGroup]="stayForm">
   <div class="panel-heading">
-    <!--<div class="form-group">
+    <div class="form-group clearfix">
       <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="in + 1 > 1" (click)="removeStay(in)"></i>
-    </div>-->
-
-    <!--<div class="clearfix">
-      <my-date-picker class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-        [disabled]="in + 1 == 1" [(options)]="myDatePickerOptions" formControlName="startDate"></my-date-picker>
-      <my-date-picker class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1"
-        [disabled]="in + 1 == 1" [(options)]="myDatePickerOptions" formControlName="endDate"></my-date-picker>
-    </div>-->
-  </div>
-
-  <div class="panel-body">
-
-    <div [formGroup]="stayGroup">
-
-      <div class="row">
-
-        <!-- Anonymous person -->
-        <!--<div *ngIf="i + 1 > 1" class="form-group col-lg-12 col-lg-offset-0 col-md-12 col-md-offset-0 col-sm-12 col-sm-offset-0 col-xs-10 col-xs-offset-1">
-          <div class="clearfix">
-            <div class="pull-left">
-              <label>Anonymous</label>
-              <input type="checkbox" formControlName="anonymous" />
-            </div>
-
-            <i class="glyphicon glyphicon-remove remove-icon pull-right" *ngIf="i+1 !== 1" (click)="removeGuest(stay, i)"></i>
-          </div>
-        </div>-->
-
-        <app-form-array-guest [parentForm]="stayGroup" [guests]="stay?.guests"></app-form-array-guest>
-
-      <!--<div class="divider" *ngIf="stay.controls.guestArray.length > i+1"></div>-->
-
     </div>
 
-    <!--<button class="btn btn-success" (click)="addGuest(stay)">Add new guest</button>-->
+    <div class="clearfix">
+      <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+        <my-date-picker [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="startDate"></my-date-picker>
+
+        <small *ngIf="!stayForm.controls.startDate.valid">
+          Start date is required.
+        </small>
+      </div>
+
+      <div class="form-group col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-6 col-sm-offset-0 col-xs-10 col-xs-offset-1">
+        <my-date-picker [disabled]="in + 1 == 1" [(options)]="subDatePickerOptions" formControlName="endDate"></my-date-picker>
+
+        <small *ngIf="!stayForm.controls.endDate.valid">
+          End date is required.
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <div formArrayName="guestArray" class="panel-body">
+    <div [formGroupName]="i" *ngFor="let guest of stay['controls'].guestArray['controls']; let i = index" class="no-validation">
+
+      <app-form-guest [group]="stayForm['controls'].guestArray.controls[i]" [stay]="stay" [setGuest]="guest" [i]="i"></app-form-guest>
+
+      <div class="divider" *ngIf="stay.controls.guestArray.length > i+1"></div>
+
+    </div>
+    <button class="btn btn-success" (click)="addGuest(stay)">Add new guest</button>
   </div>
 </div>
