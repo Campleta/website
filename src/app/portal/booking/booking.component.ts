@@ -45,8 +45,8 @@ export class BookingComponent implements OnInit {
     markCurrentYear: true,
     openSelectorOnInputClick: true,
   };
-  fromDate: any; //= { date: { day: 0, month: 0, year: 0 }};
-  toDate: any; //= { date: { day: 0, month: 0, year: 0 }};
+  fromDate: any = { date: { day: 0, month: 0, year: 0 }};
+  toDate: any = { date: { day: 0, month: 0, year: 0 }};
 
   occupiedColor = "rgba(251, 24, 24, .5)";
   partlyOccupied = "rgba(251, 221, 24, .5)";
